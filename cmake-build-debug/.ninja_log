@@ -48,3 +48,9 @@
 1754	1879	7761047749815174	Youtube_Download_v2.exe	90aab7c7a143293c
 7	1010	7761049034389630	CMakeFiles/Youtube_Download_v2.dir/directory_search.c.obj	aecebd5907eb0dc3
 1011	1131	7761049044427940	Youtube_Download_v2.exe	90aab7c7a143293c
+4	1440	7761053642487540	CMakeFiles/Youtube_Download_v2.dir/main.c.obj	d94315b33b2840b5
+11	1465	7761053642567809	CMakeFiles/Youtube_Download_v2.dir/env.c.obj	5f8b0e9b1b8db953
+24	1473	7761053642687545	CMakeFiles/Youtube_Download_v2.dir/directory_rename.c.obj	d93ab1ebef522570
+18	1481	7761053642627551	CMakeFiles/Youtube_Download_v2.dir/directory_search.c.obj	aecebd5907eb0dc3
+30	1490	7761053642747554	CMakeFiles/Youtube_Download_v2.dir/directory.c.obj	fabbe73672ed4469
+1490	1608	7761053657353140	Youtube_Download_v2.exe	90aab7c7a143293c
