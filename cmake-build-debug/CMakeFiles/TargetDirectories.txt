@@ -1,0 +1,3 @@
+C:/Users/Ionut/CLionProjects/Youtube-Download v2/cmake-build-debug/CMakeFiles/Youtube_Download_v2.dir
+C:/Users/Ionut/CLionProjects/Youtube-Download v2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Ionut/CLionProjects/Youtube-Download v2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
