@@ -17,8 +17,8 @@ typedef struct CURR_VARIABLES{
     char band[MAX_STRING_LENGHT];
     char album[MAX_STRING_LENGHT];
     char song[MAX_STRING_LENGHT];
-    DIRECTORIES* dir;
-    DIRECTORIES_LIST* dir_list;
+    DIRECTORY* dir;
+    DIRECTORY_LIST* dir_list;
 }CURR_VARIABLES;
 
 typedef struct ABV_VARIABLE{

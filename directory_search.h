@@ -2,6 +2,8 @@
 // Created by Ionut on 8/4/2025.
 //
 
+#include "directory.h"
+
 #ifndef DIRECTORY_SEARCH_H
 #define DIRECTORY_SEARCH_H
 
@@ -31,10 +33,10 @@ typedef struct ALL {
 }ALL;
 void free_ALL(ALL* new);
 ALL* new_ALL_from_string(char c, char* b, char* a, char* s);
-int find_if_correct_check_below(DIRECTORIES* potential_dir, ALL* all, int start);
-int get_correct_files_check_above(DIRECTORIES* music, ALL* all, DIRECTORIES_LIST* directories_list);
-int print_directory(DIRECTORIES* data, int what_to_show, int depth, int number, int nr_digits);
-int get_all_correct_dirs(DIRECTORIES* music, ALL* all, DIRECTORIES_LIST* directories_list);
-void recursive_show_directories(DIRECTORIES* directories, int recursion_number, int depth, int what_to_show);
+int find_if_correct_check_below(DIRECTORY* potential_dir, ALL* all, int start);
+int get_correct_files_check_above(DIRECTORY* music, ALL* all, DIRECTORY_LIST* directories_list);
+int print_directory(DIRECTORY* data, int what_to_show, int depth, int number, int nr_digits);
+int get_all_correct_dirs(DIRECTORY* music, ALL* all, DIRECTORY_LIST* directories_list);
+void recursive_show_directories(DIRECTORY* directories, int recursion_number, int depth, int what_to_show);
 
 #endif //DIRECTORY_SEARCH_H

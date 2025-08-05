@@ -51,7 +51,8 @@ void handle_errors_show(int flag) {
 }
 void ui_show(int arg, char **argv) {
     int poz = 0;
-    DIRECTORIES_LIST* dirs_to_list = new_directories_list();
+    DIRECTORY_LIST* dirs_to_list = directory_list_new();
+    DIRECTORY_LIST* dirs_from_p = directory_list_new();
     int flags = 0;
 
     while (poz < arg) {
@@ -75,16 +76,16 @@ void ui_show(int arg, char **argv) {
             }
             char* path = argv[poz];
             poz++;
-            DIRECTORIES* dir = new_directory(path, NULL);
+            DIRECTORY* dir = directory_new(path, NULL);
             if (dir == NULL) {
                 flags |= ERROR_INCORRECT_PATH;
                 break;
             }
-            recursive_make_directories_from_path(dir, path, 1);
-            add_all_sub_dirs_to_list(dir, dirs_to_list);
+            directory_make_from_path_recursive(dir, path, 1);
+            add_all_sub_dirs_to_list(dir, dirs_from_p);
             flags |= DIRS_SELECT_FLAG;
         }else if (strcasecmp(argv[poz], "-m") == 0) {
-            if (poz + 4 > arg) {
+            if (poz + 5 > arg) {
                 flags |= ERROR_NO_BAS;
                 break;
             }
@@ -105,9 +106,10 @@ void ui_show(int arg, char **argv) {
         flags = DEFAULT_FLAGS;
     }
     {
+
         int nr_digits = get_nr_digits(dirs_to_list->nr_directories);
         for (int i = 0; i < dirs_to_list->nr_directories; i++) {
-            int x = PRINT_DIRECTORY(dirs_to_list->directories_list[i], S_NAME | S_NUMBER | flags | S_TYPE, i, nr_digits);
+            PRINT_DIRECTORY(dirs_to_list->directories_list[i], S_NAME | S_NUMBER | flags | S_TYPE, i, nr_digits);
         }
     }
 }
@@ -130,7 +132,7 @@ void ui(int arg, char* args[]){
 
 
 int main(int argc, char *argv[]){
-    all_variables.curr_variables.dir = make_music_directory("D:/Music");
+    all_variables.curr_variables.dir = directory_make_music_dir("D:/Music");
     ui(argc - 1, argv + 1);
     // printf("%d\n", argc);
     // for (int i = 0; i < argc; i++) {

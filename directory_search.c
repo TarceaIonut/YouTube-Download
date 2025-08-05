@@ -37,7 +37,7 @@ ALL* new_ALL_from_string(char c, char* b, char* a, char* s) {
     char* names[3] = {b, a, s};
     return new_ALL_from_strings(choice, names, 3);
 }
-int find_if_correct_check_below(DIRECTORIES* potential_dir, ALL* all, int start) {
+int find_if_correct_check_below(DIRECTORY* potential_dir, ALL* all, int start) {
     int type = DIR_TYPE;
     if (start == all->depth - 1) {
         type = FILE_TYPE;
@@ -56,30 +56,30 @@ int find_if_correct_check_below(DIRECTORIES* potential_dir, ALL* all, int start)
     return 0;
 }
 
-int get_all_correct_dirs(DIRECTORIES* music, ALL* all, DIRECTORIES_LIST* directories_list) {
-    DIRECTORIES_LIST* list = new_directories_list();
+int get_all_correct_dirs(DIRECTORY* music, ALL* all, DIRECTORY_LIST* directories_list) {
+    DIRECTORY_LIST* list = directory_list_new();
     get_correct_files_check_above(music, all, list);
     int nr = 0;
     for (int i = 0; i < list->nr_directories; i++) {
         if (find_if_correct_check_below(list->directories_list[i], all, all->choice)) {
 
-            add_to_directories_list(directories_list, list->directories_list[i]);
+            directory_list_add_dir(directories_list, list->directories_list[i]);
             nr++;
         }
     }
     free_directories_list(list);
     return nr;
 }
-int get_correct_files_check_above(DIRECTORIES* music, ALL* all, DIRECTORIES_LIST* directories_list) {
+int get_correct_files_check_above(DIRECTORY* music, ALL* all, DIRECTORY_LIST* directories_list) {
     int nr_dir_list = all->choice;
-    DIRECTORIES_LIST* dl_old = new_directories_list();
-    add_to_directories_list(dl_old, music);
+    DIRECTORY_LIST* dl_old = directory_list_new();
+    directory_list_add_dir(dl_old, music);
     for (int i = 0; i <= nr_dir_list; i++) {
         int type = DIR_TYPE;
         if (i == all->depth - 1) {
             type = FILE_TYPE;
         }
-        DIRECTORIES_LIST* dl_new = new_directories_list();
+        DIRECTORY_LIST* dl_new = directory_list_new();
         add_named_files_from_dir_list_to_list(dl_old, all->names[i], type, dl_new);
         free_directories_list(dl_old);
         dl_old = dl_new;
@@ -87,14 +87,14 @@ int get_correct_files_check_above(DIRECTORIES* music, ALL* all, DIRECTORIES_LIST
     copy_from_list_to_list(dl_old, directories_list);
     return nr_dir_list;
 }
-DIRECTORIES* make_music_directory(char* path) {
-    DIRECTORIES* directories = new_directory(path, NULL);
+DIRECTORY* directory_make_music_dir(char* path) {
+    DIRECTORY* directories = directory_new(path, NULL);
     //printf("directories %p\n", directories);
-    recursive_make_directories_from_path(directories, path, 3);
+    directory_make_from_path_recursive(directories, path, 3);
     //printf("directories %p\n", directories);
     return directories;
 }
-int print_directory(DIRECTORIES* data, int what_to_show, int depth, int number, int nr_digits) {
+int print_directory(DIRECTORY* data, int what_to_show, int depth, int number, int nr_digits) {
     if (what_to_show & S_NUMBER && number == -1) {
         return 0;
     }
@@ -127,7 +127,7 @@ int print_directory(DIRECTORIES* data, int what_to_show, int depth, int number, 
     printf("\n");
     return 1;
 }
-void recursive_show_directories(DIRECTORIES* directories, int recursion_number, int depth, int what_to_show) {
+void recursive_show_directories(DIRECTORY* directories, int recursion_number, int depth, int what_to_show) {
     if (is_dir(&directories->main_directory) && (what_to_show & DIR_TYPE)) {
         print_directory(directories, S_TYPE | S_NAME, depth, 0, 0);
     }

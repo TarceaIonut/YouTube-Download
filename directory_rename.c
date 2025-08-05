@@ -3,7 +3,7 @@
 #include "directory.h"
 #include <stdio.h>
 
-char* get_name_with_number(DIRECTORIES* dir, char* name, int number, int nr_digits) {
+char* get_name_with_number(DIRECTORY* dir, char* name, int number, int nr_digits) {
     char* string = get_file_index_number_string(number, nr_digits);
     int len_string = strlen(string);
     int len_name = strlen(name);
@@ -27,12 +27,12 @@ char* create_new_path_from_full_path(char* full_path, char* name) {
     new_path[last_poz + 1 + len_name] = 0;
     return new_path;
 }
-int rename_directory_with_number(DIRECTORIES* dir, char* name, int number, int nr_digits) {
+int rename_directory_with_number(DIRECTORY* dir, char* name, int number, int nr_digits) {
     char* full_path = get_name_with_number(dir, name, number, nr_digits);
     rename_directory(dir, full_path);
     free(full_path);
 }
-int rename_directory(DIRECTORIES* dir, char* new_name) {
+int rename_directory(DIRECTORY* dir, char* new_name) {
     if (dir == NULL) {
         return 0;
     }

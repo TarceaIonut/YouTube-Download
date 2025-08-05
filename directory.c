@@ -5,11 +5,10 @@
 #include "directory.h"
 
 
+void directory_list_add_dir_list(DIRECTORY_LIST* final_list, DIRECTORY_LIST* list) {
 
-
-
-
-int free_directories_list(DIRECTORIES_LIST* dir) {
+}
+int free_directories_list(DIRECTORY_LIST* dir) {
     if (dir != NULL) {
         free(dir->directories_list);
         free(dir);
@@ -17,22 +16,25 @@ int free_directories_list(DIRECTORIES_LIST* dir) {
     }
     return 0;
 }
-DIRECTORIES_LIST* new_directories_list() {
-    DIRECTORIES_LIST* new_directories_list = malloc(sizeof(DIRECTORIES_LIST));
+DIRECTORY_LIST* directory_list_new() {
+    DIRECTORY_LIST* new_directories_list = malloc(sizeof(DIRECTORY_LIST));
     new_directories_list->nr_directories = 0;
     new_directories_list->max_allowed_dirs = INITIAL_DIR_SIZE;
-    new_directories_list->directories_list = malloc(sizeof(DIRECTORIES_LIST*) * INITIAL_DIR_SIZE);
+    new_directories_list->directories_list = malloc(sizeof(DIRECTORY_LIST*) * INITIAL_DIR_SIZE);
     return new_directories_list;
 }
-void expand_directories_list(DIRECTORIES_LIST* directories_list) {
-    directories_list->max_allowed_dirs += INITIAL_DIR_SIZE;
-    DIRECTORIES** old = directories_list->directories_list;
-    DIRECTORIES** new = malloc(sizeof(DIRECTORIES*) * directories_list->max_allowed_dirs);
-    memcpy(new, old, sizeof(DIRECTORIES*) * directories_list->nr_directories);
+void expand_directories_list(DIRECTORY_LIST* directories_list) {
+    directory_list_expand_by_value(directories_list, INITIAL_DIR_SIZE);
+}
+void directory_list_expand_by_value(DIRECTORY_LIST* directories_list, int value) {
+    directories_list->max_allowed_dirs += value;
+    DIRECTORY** old = directories_list->directories_list;
+    DIRECTORY** new = malloc(sizeof(DIRECTORY*) * directories_list->max_allowed_dirs);
+    memcpy(new, old, sizeof(DIRECTORY*) * directories_list->nr_directories);
     directories_list->directories_list = new;
     free(old);
 }
-void add_to_directories_list(DIRECTORIES_LIST* directories_list, DIRECTORIES* directories) {
+void directory_list_add_dir(DIRECTORY_LIST* directories_list, DIRECTORY* directories) {
     if (directories_list->max_allowed_dirs >= directories_list->nr_directories) {
         expand_directories_list(directories_list);
     }
@@ -41,37 +43,42 @@ void add_to_directories_list(DIRECTORIES_LIST* directories_list, DIRECTORIES* di
 boolean is_dir(const WIN32_FIND_DATAA* data) {
     return data->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
 }
-DIRECTORIES* new_directory(char* path, DIRECTORIES* parrent){
-    DIRECTORIES* directory = malloc(sizeof(DIRECTORIES));
-    directory->main_directory = get_data_for_current_directoty(path);
+DIRECTORY* directory_new(char* path, DIRECTORY* parrent){
+    DIRECTORY* directory = malloc(sizeof(DIRECTORY));
+    int rez = get_data_for_current_directory(path, &directory->main_directory);
+    if (rez == 0) return NULL;
     directory->parrent_directory = parrent;
     directory->path = path;
     directory->nr_directories = 0;
     directory->max_allowed_dirs = INITIAL_DIR_SIZE;
-    directory->sub_directories = malloc(INITIAL_DIR_SIZE * sizeof(DIRECTORIES*));
+    directory->sub_directories = malloc(INITIAL_DIR_SIZE * sizeof(DIRECTORY*));
     return directory;
 }
-void free_directories(DIRECTORIES* directories) {
-    for (int i = 0; i < directories->nr_directories; i++) {
-        free_directories(directories->sub_directories[i]);
+void directory_free(DIRECTORY* directories) {
+    if (directories == NULL) return;
+    if (directories->sub_directories != NULL) {
+        for (int i = 0; i < directories->nr_directories; i++) {
+            directory_free(directories->sub_directories[i]);
+        }
+        free(directories->sub_directories);
     }
-    free(directories->sub_directories);
     free(directories);
 }
-void directories_expand_sub_dir_size(DIRECTORIES* directories) {
+void directory_expand_sub_dir_size(DIRECTORY* directories) {
     directories->max_allowed_dirs += INITIAL_DIR_SIZE;
-    DIRECTORIES** old = directories->sub_directories;
-    DIRECTORIES** new = malloc(sizeof(DIRECTORIES*) * directories->max_allowed_dirs);
-    memcpy(new, old, sizeof(DIRECTORIES*) * directories->nr_directories);
+    DIRECTORY** old = directories->sub_directories;
+    DIRECTORY** new = malloc(sizeof(DIRECTORY*) * directories->max_allowed_dirs);
+    memcpy(new, old, sizeof(DIRECTORY*) * directories->nr_directories);
     directories->sub_directories = new;
     free(old);
 }
-void add_directory(DIRECTORIES* directories, DIRECTORIES *dir) {
+void directory_add_dir(DIRECTORY* directories, DIRECTORY *dir) {
+    if (dir == NULL) return;
     if (directories->nr_directories >= directories->max_allowed_dirs) {
-        directories_expand_sub_dir_size(directories);
+        directory_expand_sub_dir_size(directories);
     }
-    directories->sub_directories[directories->nr_directories] = malloc(sizeof(DIRECTORIES));
-    memcpy(directories->sub_directories[directories->nr_directories], dir, sizeof(DIRECTORIES));
+    directories->sub_directories[directories->nr_directories] = malloc(sizeof(DIRECTORY));
+    memcpy(directories->sub_directories[directories->nr_directories], dir, sizeof(DIRECTORY));
     directories->nr_directories++;
 }
 char* get_dir_name_from_path(char* path) {
@@ -85,21 +92,21 @@ char* get_dir_name_from_path(char* path) {
     }
     return path + poz;
 }
-WIN32_FIND_DATAA get_data_for_current_directoty(char* path) {
+int get_data_for_current_directory(char* path, WIN32_FIND_DATAA* data) {
     WIN32_FILE_ATTRIBUTE_DATA fileAttributes;
-    WIN32_FIND_DATAA data;
     int x = GetFileAttributesExA(path, GetFileExInfoStandard, &fileAttributes);
-    data.dwFileAttributes = fileAttributes.dwFileAttributes;
-    data.ftCreationTime = fileAttributes.ftCreationTime;
-    data.ftLastAccessTime = fileAttributes.ftLastAccessTime;
-    data.ftLastWriteTime = fileAttributes.ftLastWriteTime;
-    data.nFileSizeHigh = fileAttributes.nFileSizeHigh;
-    data.nFileSizeLow = fileAttributes.nFileSizeLow;
-    strcpy(data.cFileName, get_dir_name_from_path(path));
     if (x < 0) {
-        data.dwFileAttributes = -1;
+        return 0;
     }
-    return data;
+    data->dwFileAttributes = fileAttributes.dwFileAttributes;
+    data->ftCreationTime = fileAttributes.ftCreationTime;
+    data->ftLastAccessTime = fileAttributes.ftLastAccessTime;
+    data->ftLastWriteTime = fileAttributes.ftLastWriteTime;
+    data->nFileSizeHigh = fileAttributes.nFileSizeHigh;
+    data->nFileSizeLow = fileAttributes.nFileSizeLow;
+    strcpy(data->cFileName, get_dir_name_from_path(path));
+
+    return 1;
 }
 char* get_new_path_from_dirpath(char* path, char* name) {
     char* new_path = malloc(strlen(path) + strlen(name) + 2);
@@ -111,9 +118,8 @@ char* get_dirpath_from_filepath(char* filepath){
     sprintf(dirpath, "%s/*", filepath);
     return dirpath;
 }
-boolean recursive_make_directories_from_path(DIRECTORIES* directories, char* path, int recursion) {
+boolean directory_make_from_path_recursive(DIRECTORY* directories, char* path, int recursion) {
     WIN32_FIND_DATAA data;
-    directories->main_directory = get_data_for_current_directoty(path);
     directories->path = path;
     if (recursion == 0) {
         return 1;
@@ -133,10 +139,12 @@ boolean recursive_make_directories_from_path(DIRECTORIES* directories, char* pat
             }
 
             char* new_path = get_new_path_from_dirpath(path, name);
-            //printf("new_path: %s %d  get_dir_name = %s %d\n", new_path, strlen(new_path), get_dir_name_from_path(new_path), strlen(get_dir_name_from_path(new_path)));
-            add_directory(directories, new_directory(new_path, directories));
+            DIRECTORY* new_d = directory_new(new_path, directories);
+            if (new_d != NULL) {
+                directory_add_dir(directories, new_d);
+            }
 
-            recursive_make_directories_from_path(directories->sub_directories[directories->nr_directories - 1], new_path, recursion - 1);
+            directory_make_from_path_recursive(directories->sub_directories[directories->nr_directories - 1], new_path, recursion - 1);
         } while (FindNextFileA(hFind, &data));
         FindClose(hFind);
     }
@@ -148,7 +156,7 @@ boolean recursive_make_directories_from_path(DIRECTORIES* directories, char* pat
 
 
 
-DIRECTORIES* find_directories_by_name(DIRECTORIES* directories, char* name) {
+DIRECTORY* directory_find_by_name(DIRECTORY* directories, char* name) {
     for (int i = 0; i < directories->nr_directories; i++) {
         if (directories->sub_directories[i] != NULL)
             if (strcasecmp(directories->sub_directories[i]->main_directory.cFileName, name) == 0) {
@@ -158,31 +166,31 @@ DIRECTORIES* find_directories_by_name(DIRECTORIES* directories, char* name) {
     return NULL;
 }
 
-void direct_transfer_directories_to_list(DIRECTORIES* directories, DIRECTORIES_LIST* directories_list) {
+void direct_transfer_directories_to_list(DIRECTORY* directories, DIRECTORY_LIST* directories_list) {
     directories_list->directories_list = directories->sub_directories;
     directories_list->nr_directories = directories->nr_directories;
     directories_list->max_allowed_dirs = directories->max_allowed_dirs;
 }
-void add_all_sub_dirs_to_list(DIRECTORIES* directories, DIRECTORIES_LIST* directories_list) {
+void add_all_sub_dirs_to_list(DIRECTORY* directories, DIRECTORY_LIST* directories_list) {
     for (int i = 0; i < directories->nr_directories; i++) {
-        add_to_directories_list(directories_list, directories->sub_directories[i]);
+        directory_list_add_dir(directories_list, directories->sub_directories[i]);
     }
 }
-boolean get_named_file_from_dir(DIRECTORIES* directories, char* band_name, DIRECTORIES_LIST* directories_list) {
+boolean get_named_file_from_dir(DIRECTORY* directories, char* band_name, DIRECTORY_LIST* directories_list) {
     if (band_name == NULL) {
         direct_transfer_directories_to_list(directories, directories_list);
         return 1;
     }
     else {
-        DIRECTORIES* dir = find_directories_by_name(directories, band_name);
+        DIRECTORY* dir = directory_find_by_name(directories, band_name);
         if (dir == NULL) {
             return 0;
         }
-        add_to_directories_list(directories_list, dir);
+        directory_list_add_dir(directories_list, dir);
     }
     return 1;
 }
-boolean take_file_based_on_type(DIRECTORIES* dir, int type) {
+boolean take_file_based_on_type(DIRECTORY* dir, int type) {
     //return !((type & DIR_TYPE != 0) ^ (is_dir(&dir->main_directory) != 0));
     return ((type & DIR_TYPE != 0) && is_dir(&dir->main_directory)) || ((type & FILE_TYPE) != 0) && !is_dir(&dir->main_directory);
 }
@@ -209,7 +217,7 @@ boolean str_ends_with(char* main_str, char* str) {
     }
     return 1;
 }
-boolean take_file_based_on_name(DIRECTORIES* dir, char* name) {
+boolean take_file_based_on_name(DIRECTORY* dir, char* name) {
     if (name == NULL) return 1;
     if (name[0] == 0) return 1;
     if (strcasecmp(dir->main_directory.cFileName, name) == 0) return 1;
@@ -218,7 +226,7 @@ boolean take_file_based_on_name(DIRECTORIES* dir, char* name) {
     return str_starts_with(dir->main_directory.cFileName, name);
 
 }
-int add_named_files_from_dir_to_list(DIRECTORIES* directories, char* name, int type, DIRECTORIES_LIST* directories_list) {
+int add_named_files_from_dir_to_list(DIRECTORY* directories, char* name, int type, DIRECTORY_LIST* directories_list) {
     int nr_added = 0;
     for (int i = 0; i < directories->nr_directories; i++) {
         if (directories->sub_directories[i] != NULL) {
@@ -226,21 +234,21 @@ int add_named_files_from_dir_to_list(DIRECTORIES* directories, char* name, int t
                 printf("");
             }
             if (take_file_based_on_name(directories->sub_directories[i], name) && take_file_based_on_type(directories->sub_directories[i], type)) {
-                add_to_directories_list(directories_list, directories->sub_directories[i]);
+                directory_list_add_dir(directories_list, directories->sub_directories[i]);
                 nr_added++;
             }
         }
     }
     return nr_added;
 }
-int add_named_files_from_dir_list_to_list(DIRECTORIES_LIST* directories, char* name, int type, DIRECTORIES_LIST* directories_list) {
+int add_named_files_from_dir_list_to_list(DIRECTORY_LIST* directories, char* name, int type, DIRECTORY_LIST* directories_list) {
     int nr_added = 0;
     for (int i = 0; i < directories->nr_directories; i++) {
         nr_added += add_named_files_from_dir_to_list(directories->directories_list[i], name, type, directories_list);
     }
     return nr_added;
 }
-void copy_from_list_to_list(DIRECTORIES_LIST* source, DIRECTORIES_LIST* destination) {
+void copy_from_list_to_list(DIRECTORY_LIST* source, DIRECTORY_LIST* destination) {
     destination->directories_list = source->directories_list;
     destination->nr_directories = source->nr_directories;
     destination->max_allowed_dirs = source->max_allowed_dirs;

@@ -13,58 +13,60 @@
 #define FILE_TYPE 2
 #define ALL_TYPE 3
 
-typedef struct DIRECTORIES{
+typedef struct DIRECTORY{
     WIN32_FIND_DATAA main_directory;
     char* path;
     unsigned int nr_directories;
     unsigned int max_allowed_dirs;
-    struct DIRECTORIES** sub_directories;
-    struct DIRECTORIES* parrent_directory;
-}DIRECTORIES;
+    struct DIRECTORY** sub_directories;
+    struct DIRECTORY* parrent_directory;
+}DIRECTORY;
 
-typedef struct DIRECTORIES_LIST {
+typedef struct DIRECTORY_LIST {
     unsigned int nr_directories;
     unsigned int max_allowed_dirs;
-    DIRECTORIES** directories_list;
-}DIRECTORIES_LIST;
+    DIRECTORY** directories_list;
+}DIRECTORY_LIST;
 
 
 /// DIRECTORY
-DIRECTORIES* new_directory(char* path, DIRECTORIES* parrent);
+DIRECTORY* directory_new(char* path, DIRECTORY* parrent);
 boolean is_dir(const WIN32_FIND_DATAA* data);
-WIN32_FIND_DATAA get_data_for_current_directoty(char* path);
-void add_directory(DIRECTORIES* directories, DIRECTORIES *dir);
-void directories_expand_sub_dir_size(DIRECTORIES* directories);
-void free_directories(DIRECTORIES* directories);
+int get_data_for_current_directory(char* path, WIN32_FIND_DATAA* data);
+void directory_add_dir(DIRECTORY* directories, DIRECTORY *dir);
+void directory_expand_sub_dir_size(DIRECTORY* directories);
+void directory_free(DIRECTORY* directories);
 
-boolean recursive_make_directories_from_path(DIRECTORIES* directories, char* path, int recursion);
-DIRECTORIES* make_music_directory(char* path);
-DIRECTORIES* find_directories_by_name(DIRECTORIES* directories, char* name);
+boolean directory_make_from_path_recursive(DIRECTORY* directories, char* path, int recursion);
+DIRECTORY* directory_make_music_dir(char* path);
+DIRECTORY* directory_find_by_name(DIRECTORY* directories, char* name);
 
 /// DIRECTORIES_LIST
-DIRECTORIES_LIST* new_directories_list();
-void add_to_directories_list(DIRECTORIES_LIST* directories_list, DIRECTORIES* directories);
-void expand_directories_list(DIRECTORIES_LIST* directories_list);
-void direct_transfer_directories_to_list(DIRECTORIES* directories, DIRECTORIES_LIST* directories_list);
-void copy_from_list_to_list(DIRECTORIES_LIST* source, DIRECTORIES_LIST* destination);
-int add_named_files_from_dir_to_list(DIRECTORIES* directories, char* name, int type, DIRECTORIES_LIST* directories_list);
-int add_named_files_from_dir_list_to_list(DIRECTORIES_LIST* directories, char* name, int type, DIRECTORIES_LIST* directories_list);
-void add_all_sub_dirs_to_list(DIRECTORIES* directories, DIRECTORIES_LIST* directories_list);
-int free_directories_list(DIRECTORIES_LIST* dir);
+DIRECTORY_LIST* directory_list_new();
+void directory_list_add_dir(DIRECTORY_LIST* directories_list, DIRECTORY* directories);
+void directory_list_add_dir_list(DIRECTORY_LIST* final_list, DIRECTORY_LIST* list);
+void directory_list_expand_by_value(DIRECTORY_LIST* directories_list, int value);
+void expand_directories_list(DIRECTORY_LIST* directories_list);
+void direct_transfer_directories_to_list(DIRECTORY* directories, DIRECTORY_LIST* directories_list);
+void copy_from_list_to_list(DIRECTORY_LIST* source, DIRECTORY_LIST* destination);
+int add_named_files_from_dir_to_list(DIRECTORY* directories, char* name, int type, DIRECTORY_LIST* directories_list);
+int add_named_files_from_dir_list_to_list(DIRECTORY_LIST* directories, char* name, int type, DIRECTORY_LIST* directories_list);
+void add_all_sub_dirs_to_list(DIRECTORY* directories, DIRECTORY_LIST* directories_list);
+int free_directories_list(DIRECTORY_LIST* dir);
 
 
 /// STRING
 char* get_dir_name_from_path(char* path);
 char* get_new_path_from_dirpath(char* path, char* name);
 char* get_dirpath_from_filepath(char* filepath);
-boolean get_named_file_from_dir(DIRECTORIES* directories, char* band_name, DIRECTORIES_LIST* directories_list);
+boolean get_named_file_from_dir(DIRECTORY* directories, char* band_name, DIRECTORY_LIST* directories_list);
 boolean str_starts_with(char* str1, char* str2);
 boolean str_ends_with(char* main_str, char* str);
 
 
 /// TAKE
-boolean take_file_based_on_type(DIRECTORIES* dir, int type);
-boolean take_file_based_on_name(DIRECTORIES* dir, char* name);
+boolean take_file_based_on_type(DIRECTORY* dir, int type);
+boolean take_file_based_on_name(DIRECTORY* dir, char* name);
 int get_nr_digits(int number);
 char* get_file_index_number_string(int number, int nr_digits);
 
