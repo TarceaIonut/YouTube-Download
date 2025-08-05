@@ -82,7 +82,7 @@ void ui_show(int arg, char **argv) {
                 break;
             }
             directory_make_from_path_recursive(dir, path, 1);
-            add_all_sub_dirs_to_list(dir, dirs_from_p);
+            add_all_sub_dirs_to_list(dir, dirs_to_list);
             flags |= DIRS_SELECT_FLAG;
         }else if (strcasecmp(argv[poz], "-m") == 0) {
             if (poz + 5 > arg) {
@@ -91,7 +91,6 @@ void ui_show(int arg, char **argv) {
             }
             ALL* all = new_ALL_from_string(argv[poz+1][0], argv[poz+2], argv[poz+3], argv[poz+4]);
             get_all_correct_dirs(all_variables.curr_variables.dir, all, dirs_to_list);
-            //free_ALL(all);
             poz += 5;
         }else {
             printf("Unknown option: %s\n", argv[poz]);
@@ -106,11 +105,13 @@ void ui_show(int arg, char **argv) {
         flags = DEFAULT_FLAGS;
     }
     {
-
+        directory_list_add_dir_list(dirs_to_list, dirs_from_p);
         int nr_digits = get_nr_digits(dirs_to_list->nr_directories);
         for (int i = 0; i < dirs_to_list->nr_directories; i++) {
             PRINT_DIRECTORY(dirs_to_list->directories_list[i], S_NAME | S_NUMBER | flags | S_TYPE, i, nr_digits);
         }
+        directory_list_free_dirs(&dirs_from_p);
+        directory_list_free(&dirs_to_list);
     }
 }
 void var_ui(int arg, char **argv) {
@@ -129,9 +130,13 @@ void ui(int arg, char* args[]){
     }
 
 }
+int set_up_env_vars() {
 
+    return 1;
+}
 
 int main(int argc, char *argv[]){
+
     all_variables.curr_variables.dir = directory_make_music_dir("D:/Music");
     ui(argc - 1, argv + 1);
     // printf("%d\n", argc);

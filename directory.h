@@ -13,20 +13,25 @@
 #define FILE_TYPE 2
 #define ALL_TYPE 3
 
+typedef struct DIRECTORY_LIST DIRECTORY_LIST;
+typedef struct DIRECTORY DIRECTORY;
+
 typedef struct DIRECTORY{
     WIN32_FIND_DATAA main_directory;
     char* path;
-    unsigned int nr_directories;
-    unsigned int max_allowed_dirs;
-    struct DIRECTORY** sub_directories;
-    struct DIRECTORY* parrent_directory;
+    // unsigned int nr_directories;
+    // unsigned int max_allowed_dirs;
+    // struct DIRECTORY** sub_directories;
+    DIRECTORY_LIST* directory_list;
+    DIRECTORY* parent_directory;
 }DIRECTORY;
 
 typedef struct DIRECTORY_LIST {
-    unsigned int nr_directories;
-    unsigned int max_allowed_dirs;
+    int nr_directories;
+    int max_allowed_dirs;
     DIRECTORY** directories_list;
 }DIRECTORY_LIST;
+
 
 
 /// DIRECTORY
@@ -35,24 +40,25 @@ boolean is_dir(const WIN32_FIND_DATAA* data);
 int get_data_for_current_directory(char* path, WIN32_FIND_DATAA* data);
 void directory_add_dir(DIRECTORY* directories, DIRECTORY *dir);
 void directory_expand_sub_dir_size(DIRECTORY* directories);
-void directory_free(DIRECTORY* directories);
+void directory_free(DIRECTORY** directories);
 
-boolean directory_make_from_path_recursive(DIRECTORY* directories, char* path, int recursion);
+boolean directory_make_from_path_recursive(DIRECTORY* directory, char* path, int recursion);
 DIRECTORY* directory_make_music_dir(char* path);
-DIRECTORY* directory_find_by_name(DIRECTORY* directories, char* name);
 
 /// DIRECTORIES_LIST
 DIRECTORY_LIST* directory_list_new();
 void directory_list_add_dir(DIRECTORY_LIST* directories_list, DIRECTORY* directories);
-void directory_list_add_dir_list(DIRECTORY_LIST* final_list, DIRECTORY_LIST* list);
+int directory_list_add_dir_list(DIRECTORY_LIST* final_list, DIRECTORY_LIST* list);
 void directory_list_expand_by_value(DIRECTORY_LIST* directories_list, int value);
 void expand_directories_list(DIRECTORY_LIST* directories_list);
-void direct_transfer_directories_to_list(DIRECTORY* directories, DIRECTORY_LIST* directories_list);
+void direct_transfer_directories_to_list(DIRECTORY* directories, DIRECTORY_LIST** directories_list);
 void copy_from_list_to_list(DIRECTORY_LIST* source, DIRECTORY_LIST* destination);
 int add_named_files_from_dir_to_list(DIRECTORY* directories, char* name, int type, DIRECTORY_LIST* directories_list);
 int add_named_files_from_dir_list_to_list(DIRECTORY_LIST* directories, char* name, int type, DIRECTORY_LIST* directories_list);
 void add_all_sub_dirs_to_list(DIRECTORY* directories, DIRECTORY_LIST* directories_list);
-int free_directories_list(DIRECTORY_LIST* dir);
+DIRECTORY* directory_list_find_by_name(DIRECTORY_LIST* list, char* name);
+int directory_list_free(DIRECTORY_LIST** dir);
+int directory_list_free_dirs(DIRECTORY_LIST** dir);
 
 
 /// STRING

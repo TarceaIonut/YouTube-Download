@@ -48,8 +48,8 @@ int find_if_correct_check_below(DIRECTORY* potential_dir, ALL* all, int start) {
     if (start == all->depth - 1) {
         return 1;
     }
-    for (int i = 0; i < potential_dir->nr_directories; i++) {
-        if (find_if_correct_check_below(potential_dir->sub_directories[i], all, start + 1)) {
+    for (int i = 0; i < potential_dir->directory_list->nr_directories; i++) {
+        if (find_if_correct_check_below(potential_dir->directory_list->directories_list[i], all, start + 1)) {
             return 1;
         }
     }
@@ -67,7 +67,7 @@ int get_all_correct_dirs(DIRECTORY* music, ALL* all, DIRECTORY_LIST* directories
             nr++;
         }
     }
-    free_directories_list(list);
+    directory_list_free(&list);
     return nr;
 }
 int get_correct_files_check_above(DIRECTORY* music, ALL* all, DIRECTORY_LIST* directories_list) {
@@ -81,7 +81,7 @@ int get_correct_files_check_above(DIRECTORY* music, ALL* all, DIRECTORY_LIST* di
         }
         DIRECTORY_LIST* dl_new = directory_list_new();
         add_named_files_from_dir_list_to_list(dl_old, all->names[i], type, dl_new);
-        free_directories_list(dl_old);
+        directory_list_free(&dl_old);
         dl_old = dl_new;
     }
     copy_from_list_to_list(dl_old, directories_list);
@@ -137,9 +137,9 @@ void recursive_show_directories(DIRECTORY* directories, int recursion_number, in
     if (recursion_number == 0) {
         return;
     }
-    for (int i = 0; i < directories->nr_directories; i++) {
-        if (directories->sub_directories[i] != NULL)
-            recursive_show_directories(directories->sub_directories[i], recursion_number - 1, depth + 1, what_to_show);
+    for (int i = 0; i < directories->directory_list->nr_directories; i++) {
+        if (directories->directory_list->directories_list[i] != NULL)
+            recursive_show_directories(directories->directory_list->directories_list[i], recursion_number - 1, depth + 1, what_to_show);
     }
 }
 
