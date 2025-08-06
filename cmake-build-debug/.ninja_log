@@ -1,15 +1,15 @@
 # ninja log v6
-12	1038	7761896723014463	CMakeFiles/Youtube_Download_v2.dir/directory.c.obj	fabbe73672ed4469
-11	1142	7761893926820745	CMakeFiles/Youtube_Download_v2.dir/directory_search.c.obj	aecebd5907eb0dc3
-9	956	7762034626543893	CMakeFiles/Youtube_Download_v2.dir/directory_rename.c.obj	d93ab1ebef522570
-15	983	7762032754810612	CMakeFiles/Youtube_Download_v2.dir/main.c.obj	d94315b33b2840b5
-56	1310	7761875814893095	CMakeFiles/Youtube_Download_v2.dir/env.c.obj	5f8b0e9b1b8db953
-957	1075	7762034636018431	Youtube_Download_v2.exe	2031b136812b9148
-10	136	7761891080485640	CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj	98f90339cf8130fa
-27	158	7762036551323376	CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj	98f90339cf8130fa
-6	1528	7762036551113374	CMakeFiles/Youtube_Download_v2.dir/main.c.obj	d94315b33b2840b5
+23	1609	7762036551283365	CMakeFiles/Youtube_Download_v2.dir/directory.c.obj	fabbe73672ed4469
 15	1551	7762036551193363	CMakeFiles/Youtube_Download_v2.dir/directory_search.c.obj	aecebd5907eb0dc3
 18	1578	7762036551233363	CMakeFiles/Youtube_Download_v2.dir/directory_rename.c.obj	d93ab1ebef522570
+6	1528	7762036551113374	CMakeFiles/Youtube_Download_v2.dir/main.c.obj	d94315b33b2840b5
 11	1592	7762036551163405	CMakeFiles/Youtube_Download_v2.dir/env.c.obj	5f8b0e9b1b8db953
-23	1609	7762036551283365	CMakeFiles/Youtube_Download_v2.dir/directory.c.obj	fabbe73672ed4469
 1609	1754	7762036567138187	Youtube_Download_v2.exe	2031b136812b9148
+27	158	7762036551323376	CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj	98f90339cf8130fa
+27	147	7762038403931797	CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj	98f90339cf8130fa
+15	1231	7762038403811787	CMakeFiles/Youtube_Download_v2.dir/directory_search.c.obj	aecebd5907eb0dc3
+11	1253	7762038403771782	CMakeFiles/Youtube_Download_v2.dir/env.c.obj	5f8b0e9b1b8db953
+7	1273	7762038403731779	CMakeFiles/Youtube_Download_v2.dir/main.c.obj	d94315b33b2840b5
+19	1274	7762038403851810	CMakeFiles/Youtube_Download_v2.dir/directory_rename.c.obj	d93ab1ebef522570
+23	1296	7762038403891801	CMakeFiles/Youtube_Download_v2.dir/directory.c.obj	fabbe73672ed4469
+1296	1433	7762038416627529	Youtube_Download_v2.exe	2031b136812b9148
