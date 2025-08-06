@@ -42,7 +42,7 @@ int find_if_correct_check_below(DIRECTORY* potential_dir, ALL* all, int start) {
     if (start == all->depth - 1) {
         type = FILE_TYPE;
     }
-    if (!take_file_based_on_type(potential_dir, type) || !take_file_based_on_name(potential_dir, all->names[start])) {
+    if (!take_directory_based_on_type(potential_dir, type) || !take_file_based_on_name(potential_dir, all->names[start])) {
         return 0;
     }
     if (start == all->depth - 1) {
@@ -98,7 +98,7 @@ int print_directory(DIRECTORY* data, int what_to_show, int depth, int number, in
     if (what_to_show & S_NUMBER && number == -1) {
         return 0;
     }
-    if (!take_file_based_on_type(data, what_to_show)) {
+    if (!take_directory_based_on_type(data, what_to_show)) {
         return 0;
     }
     if (what_to_show & S_NUMBER) {

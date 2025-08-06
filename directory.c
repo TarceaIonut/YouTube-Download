@@ -198,7 +198,7 @@ boolean get_named_file_from_dir(DIRECTORY* directories, char* band_name, DIRECTO
     }
     return 1;
 }
-boolean take_file_based_on_type(DIRECTORY* dir, int type) {
+boolean take_directory_based_on_type(DIRECTORY* dir, int type) {
     //return !((type & DIR_TYPE != 0) ^ (is_dir(&dir->main_directory) != 0));
     return ((type & DIR_TYPE != 0) && is_dir(&dir->main_directory)) || ((type & FILE_TYPE) != 0) && !is_dir(&dir->main_directory);
 }
@@ -241,7 +241,7 @@ int add_named_files_from_dir_to_list(DIRECTORY* directories, char* name, int typ
             if (take_file_based_on_name(directories->directory_list->directories_list[i], name)) {
                 printf("");
             }
-            if (take_file_based_on_name(directories->directory_list->directories_list[i], name) && take_file_based_on_type(directories->directory_list->directories_list[i], type)) {
+            if (take_file_based_on_name(directories->directory_list->directories_list[i], name) && take_directory_based_on_type(directories->directory_list->directories_list[i], type)) {
                 directory_list_add_dir(directories_list, directories->directory_list->directories_list[i]);
                 nr_added++;
             }

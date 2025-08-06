@@ -90,7 +90,7 @@ void ui_show(int arg, char **argv) {
                 break;
             }
             ALL* all = new_ALL_from_string(argv[poz+1][0], argv[poz+2], argv[poz+3], argv[poz+4]);
-            get_all_correct_dirs(all_variables.curr_variables.dir, all, dirs_to_list);
+            get_all_correct_dirs(all_variables.temporary_variables.dir, all, dirs_to_list);
             poz += 5;
         }else {
             printf("Unknown option: %s\n", argv[poz]);
@@ -136,9 +136,14 @@ int set_up_env_vars() {
 }
 
 int main(int argc, char *argv[]){
-
-    all_variables.curr_variables.dir = directory_make_music_dir("D:/Music");
+    printf("%s\n", argv[0]);
+    int rez = init_all_vars(&all_variables, argv[0]);
+    if (rez > 0) {
+        deal_with_errors(rez);
+        return 0;
+    }
     ui(argc - 1, argv + 1);
+
     // printf("%d\n", argc);
     // for (int i = 0; i < argc; i++) {
     //     printf("%s\n", argv[i]);

@@ -7,4 +7,6 @@ add_executable(Youtube_Download_v2 main.c
         env.c
         directory_search.c
         directory_rename.c
-        directory.c)
+        directory.c
+        string_helper_functions.h
+        string_helper_functions.c)

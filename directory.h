@@ -71,7 +71,7 @@ boolean str_ends_with(char* main_str, char* str);
 
 
 /// TAKE
-boolean take_file_based_on_type(DIRECTORY* dir, int type);
+boolean take_directory_based_on_type(DIRECTORY* dir, int type);
 boolean take_file_based_on_name(DIRECTORY* dir, char* name);
 int get_nr_digits(int number);
 char* get_file_index_number_string(int number, int nr_digits);
