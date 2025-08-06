@@ -120,22 +120,99 @@ void ui_show(int arg, char **argv) {
 void var_ui(int arg, char **argv) {
 
 }
-void rename_ui(int arg, char** argv) {
+enum FUNCTIONS {
+    F_SHOW = 1,
+    F_ORDER = 2,
+    F_REMOVE = 3,
+    F_RENAME = 4,
+    F_MOVE = 5,
+    F_CUT = 6,
+    F_SAVE_LIST = 100,
+};
+void dir_ui(int arg, char** argv) {
+    int function = 0;
+    char* numbers_for_order = nullptr;
+    int poz = 0;
+    DIRECTORY* directory;
+    DIRECTORY_LIST* directory_list = directory_list_new();
+    while (poz < arg) {
+        if (strcasecmp(argv[poz], "-p") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            char* path = argv[poz + 1];
+            poz += 2;
+            DIRECTORY* dir = directory_new(path, NULL);
+            if (dir == NULL) {
+                continue;
+            }
+            directory = dir;
+            directory_make_from_path_recursive(dir, path, 1);
+            add_all_sub_dirs_to_list(dir, directory_list);
+        }else if (strcasecmp(argv[poz], "-m") == 0) {
+            if (poz + 5 > arg) {
+                break;
+            }
+            ALL* all = new_ALL_from_string(argv[poz+1][0], argv[poz+2], argv[poz+3], argv[poz+4]);
+            get_all_correct_dirs(all_variables.temporary_variables.dir, all, directory_list);
+            poz += 5;
+        }
+        else if (strcasecmp(argv[poz], "--show") == 0) {
+            function = F_SHOW;
+            poz++;
+        }
+        else if (strcasecmp(argv[poz], "--order") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            function = F_ORDER;
+            numbers_for_order = argv[poz+1];
+            poz += 2;
+        }else {
+            printf("Unknown option: %s\n", argv[poz]);
+            poz++;
+        }
+    }
+    if (function == F_SHOW) {
+        int nr_digits = get_nr_digits(directory_list->nr_directories);
+        for (int i = 0; i < directory_list->nr_directories; i++) {
+            PRINT_DIRECTORY(directory_list->directories_list[i], S_NAME | S_NUMBER | FILE_TYPE | DIR_TYPE | S_TYPE, i, nr_digits);
+        }
+    }else if (function == F_ORDER) {
+        int numbers[directory_list->nr_directories];
+        int nr_numbers = 0;
+        char* token = strtok(numbers_for_order, " ");
+        char *endptr;
+        while (token != NULL && nr_numbers < directory_list->nr_directories) {
+            numbers[nr_numbers] = strtol(token, &endptr, 10); // Base 10 for decimal conversion
 
+            if (errno == ERANGE) {
+
+            }
+            else if (endptr == token || *endptr != '\0') {
+
+            }
+            else if (numbers[nr_numbers] > INT_MAX || numbers[nr_numbers] < INT_MIN) {
+
+            }else if (numbers[nr_numbers] >= 0 && numbers[nr_numbers] < directory_list->nr_directories) {
+                nr_numbers++;
+            }
+
+            token = strtok(NULL, " ");
+        }
+        order_directory_list(directory_list, numbers, nr_numbers);
+    }
 }
 void ui(int arg, char* args[]){
     if (arg == 0) {
         printf("more params needed\n");
         return;
     }
-    if (strcasecmp(args[0], "show") == 0) {
-        ui_show(arg - 1, args + 1);
+    if (strcasecmp(args[0], "dir") == 0) {
+        dir_ui(arg - 1, args + 1);
     }
     else if (strcasecmp(args[0], "var") == 0) {
         var_ui(arg - 1, args + 1);
-    }
-    else if (strcasecmp(args[0], "rename") == 0) {
-        rename_ui(arg - 1, args + 1);
     }
 
 }

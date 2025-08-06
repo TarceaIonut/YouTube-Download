@@ -62,11 +62,9 @@ int order_directory_list(DIRECTORY_LIST* dir_list, int numbers[], int nr_numbers
     int nr_digits = get_nr_digits(ordered_list_size);
     for (int i = 0; i < ordered_list_size; i++) {
         ordered_list->directories_list[i] = dir_list->directories_list[numbers[i]];
-        //PRINT_DIRECTORY(ordered_list->directories_list[i], FILE_TYPE | S_NAME | S_TYPE);
         rename_directory_with_number(ordered_list->directories_list[i], ordered_list->directories_list[i]->main_directory.cFileName, i, nr_digits);
     }
-    free(dir_list->directories_list);
-    dir_list->directories_list = ordered_list->directories_list;
+    free(ordered_list->directories_list);
     return 1;
 }
 
