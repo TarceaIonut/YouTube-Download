@@ -6,5 +6,6 @@
 #define STRING_HELPER_FUNCTIONS_H
 
 char* helper_get_quotation_string(int *poz, int argc, char** argv, int string_length, char string[]);
+int helper_change_path_with_new_name(char** path, char* new_name);
 
 #endif //STRING_HELPER_FUNCTIONS_H

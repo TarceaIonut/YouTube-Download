@@ -95,6 +95,7 @@ DIRECTORY* directory_make_music_dir(char* path) {
     return directories;
 }
 int print_directory(DIRECTORY* data, int what_to_show, int depth, int number, int nr_digits) {
+    if (data == NULL) return 0;
     if (what_to_show & S_NUMBER && number == -1) {
         return 0;
     }

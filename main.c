@@ -110,11 +110,17 @@ void ui_show(int arg, char **argv) {
         for (int i = 0; i < dirs_to_list->nr_directories; i++) {
             PRINT_DIRECTORY(dirs_to_list->directories_list[i], S_NAME | S_NUMBER | flags | S_TYPE, i, nr_digits);
         }
+        int numbers[15] = {0, 10, 3, 14, 12, 11, 13, 8, 4, 7, 5, 1, 6, 9, 2};
+        order_directory_list(dirs_to_list, numbers, 15);
+
         directory_list_free_dirs(&dirs_from_p);
         directory_list_free(&dirs_to_list);
     }
 }
 void var_ui(int arg, char **argv) {
+
+}
+void rename_ui(int arg, char** argv) {
 
 }
 void ui(int arg, char* args[]){
@@ -128,6 +134,9 @@ void ui(int arg, char* args[]){
     else if (strcasecmp(args[0], "var") == 0) {
         var_ui(arg - 1, args + 1);
     }
+    else if (strcasecmp(args[0], "rename") == 0) {
+        rename_ui(arg - 1, args + 1);
+    }
 
 }
 int set_up_env_vars() {
@@ -136,7 +145,6 @@ int set_up_env_vars() {
 }
 
 int main(int argc, char *argv[]){
-    printf("%s\n", argv[0]);
     int rez = init_all_vars(&all_variables, argv[0]);
     if (rez > 0) {
         deal_with_errors(rez);
@@ -144,8 +152,9 @@ int main(int argc, char *argv[]){
     }
     ui(argc - 1, argv + 1);
 
-    // printf("%d\n", argc);
-    // for (int i = 0; i < argc; i++) {
-    //     printf("%s\n", argv[i]);
-    // }
+
+    // DIRECTORY* dir = directory_new("D:/Ionut/A.txt", NULL);
+    // //DIRECTORY* dir = directory_new("nigger", NULL);
+    // rename_directory_with_number(dir, "B.txt", 10, 3);
+    // PRINT_DIRECTORY(dir, S_NAME | S_PATH | FILE_TYPE | DIR_TYPE);
 }

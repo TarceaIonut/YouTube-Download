@@ -47,6 +47,7 @@ DIRECTORY* directory_make_music_dir(char* path);
 
 /// DIRECTORIES_LIST
 DIRECTORY_LIST* directory_list_new();
+DIRECTORY_LIST* directory_list_new_with_size(int size);
 void directory_list_add_dir(DIRECTORY_LIST* directories_list, DIRECTORY* directories);
 int directory_list_add_dir_list(DIRECTORY_LIST* final_list, DIRECTORY_LIST* list);
 void directory_list_expand_by_value(DIRECTORY_LIST* directories_list, int value);

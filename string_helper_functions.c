@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "string_helper_functions.h"
 
@@ -30,4 +31,26 @@ char* helper_get_quotation_string(int *poz, int argc, char** argv, int string_le
     }
     *poz = i;
     return string;
+}
+int helper_change_path_with_new_name(char** path, char* new_name){
+    if (path == NULL || new_name == NULL) {
+        return 0;
+    }
+    int path_len = strlen(*path);
+    int new_name_len = strlen(new_name);
+    int poz = -1;
+    for (int i = path_len - 1; i >= 0; i--) {
+        if ((*path)[i] == '/' || (*path)[i] == '\\') {
+            poz = i;
+            break;
+        }
+    }
+    char* new_path = malloc(poz + 2 + new_name_len);
+    strncpy(new_path, *path, poz + 1);
+    strcpy(new_path + poz + 1, new_name);
+    // printf("free\n");
+    // free(*path);
+    // printf("free\n");
+    *path = new_path;
+    return 1;
 }

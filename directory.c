@@ -78,7 +78,10 @@ boolean is_dir(const WIN32_FIND_DATAA* data) {
 DIRECTORY* directory_new(char* path, DIRECTORY* parrent){
     DIRECTORY* directory = malloc(sizeof(DIRECTORY));
     int rez = get_data_for_current_directory(path, &directory->main_directory);
-    if (rez == 0) return nullptr;
+    if (rez == 0) {
+        free(directory);
+        return nullptr;
+    }
     directory->parent_directory = parrent;
     directory->path = path;
     directory->directory_list = directory_list_new();
@@ -106,7 +109,7 @@ char* get_dir_name_from_path(char* path) {
 int get_data_for_current_directory(char* path, WIN32_FIND_DATAA* data) {
     WIN32_FILE_ATTRIBUTE_DATA fileAttributes;
     int x = GetFileAttributesExA(path, GetFileExInfoStandard, &fileAttributes);
-    if (x < 0) {
+    if (x <= 0) {
         return 0;
     }
     data->dwFileAttributes = fileAttributes.dwFileAttributes;
@@ -279,4 +282,10 @@ char* get_file_index_number_string(int number, int nr_digits) {
     }
     sprintf(string + nr_digits - number_nr_digits, "%d", number);
     return string;
+}
+DIRECTORY_LIST* directory_list_new_with_size(int size) {
+    DIRECTORY_LIST* list = malloc(sizeof(DIRECTORY_LIST));
+    list->nr_directories = list->max_allowed_dirs = size;
+    list->directories_list = malloc(sizeof(DIRECTORY_LIST*) * size);
+    return list;
 }
