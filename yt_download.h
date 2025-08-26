@@ -26,7 +26,6 @@ typedef struct DL_INFO {
 
 int download_from_dl_info(DL_INFO* dl_info, char download_path[]);
 void dl_info_init(DL_INFO* dl_info);
-int download_album(char* band_name, char* album_name, char* url);
 void download(char download_options[], char output_format[], char search_command[], char main_path[]);
 
 #endif //YT_DOWNLOAD_H

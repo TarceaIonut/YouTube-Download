@@ -33,7 +33,6 @@ int get_all_files_from_dir(FILE_NAMES* file_names, char* dir_path);
 int list_dir_contents(char* path);
 int check_band();
 int check_album();
-int download_album(char* band_name, char* album_name, char* url);
 int go_to_path(char* path);
 int new_wait_process(char* command);
 HANDLE new_process(char* command);
@@ -211,46 +210,6 @@ int show_songs_of_album(char* album_name){
     sprintf(path, "%s/%s/%s", current_output_path, current_band, album_name);
     return list_dir_contents(path);
 }
-int download_album(char* band_name, char* album_name, char* url){
-    char* dir_path = malloc(1024);
-    sprintf(dir_path, "%s/%s", current_output_path, band_name);
-    mkdir(dir_path);
-    free(dir_path);
-    char* command_cmd = malloc(1024);
-    char* command_cd = malloc(1024);
-    char* command_ytdl = malloc(1024);
-    char* complete_path = malloc(1024);
-    memset(command_cmd, 0, 1024);
-    memset(command_cd, 0, 1024);
-    memset(command_ytdl, 0, 1024);
-    memset(complete_path, 0, 1024);
-    sprintf(complete_path, "%s/%s", current_output_path, band_name);
-    sprintf(command_cd, "cd /d \"%s\"", complete_path);
-    sprintf(
-        command_ytdl,
-        "%s --yes-playlist -t mp3 -o \"%s%s\" \"%s\"",
-        current_exec_path,
-        album_name,
-        "/%%(playlist_index)s - %%(title)s.%%(ext)s",
-        url
-    );
-    sprintf(command_cmd, "%s && %s", command_cd, command_ytdl);
-    //printf(command_cmd);
-
-    int fd = open("D:/ytdl.bat", O_CREAT | O_RDWR, 0777);
-    int len = strlen(command_cmd);
-    ftruncate(fd, len);
-    int nr_w = write(fd, command_cmd, len);
-    char* command = "cmd.exe /C \"start D:/ytdl.bat\"";
-
-    new_process(command);
-    sleep(1);
-    free(command);
-    free(command_cd);
-    free(command_cmd);
-    free(command_ytdl);
-}
-
 void dl_info_init(DL_INFO* dl_info) {
     dl_info->flags = 0;
     dl_info->search_string = NULL;
@@ -302,6 +261,7 @@ int output_format_init(DL_INFO* dl_info, char output_format[]) {
         order_string = "%(playlist_index)s - ";
     }
     sprintf(output_format + poz_output_format, "%s%s.%%(ext)s", order_string, title);
+    return 0;
 }
 int download_from_dl_info(DL_INFO* dl_info, char download_path[]) {
     int errors = 0;
@@ -313,11 +273,11 @@ int download_from_dl_info(DL_INFO* dl_info, char download_path[]) {
     errors |= search_command_init(dl_info, search_string);
     errors |= output_format_init(dl_info, output_format);
 
-    printf("download_options = %s, output_format = %s, search_string = %s\n", download_options, output_format, search_string);
+    if (errors > 0) return errors;
 
     download(download_options, output_format, search_string, download_path);
 
-    return errors;
+    return 0;
 }
 void download(char download_options[], char output_format[], char search_command[], char main_path[]) {
     char download_command[MAX_STRING_LENGHT];
@@ -325,7 +285,5 @@ void download(char download_options[], char output_format[], char search_command
     sprintf(download_command, "cmd /C start cmd /C yt-dlp %s -o \"%s/%s\" \"%s\"",
         download_options, main_path, output_format, search_command);
 
-    printf("%s\n", download_command);
     new_process(download_command);
-    sleep(1);
 }

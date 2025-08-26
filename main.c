@@ -290,9 +290,7 @@ void dl_ui(int arg, char** argv) {
             dl_info.path_strings[0] = band;
             dl_info.path_strings[1] = album;
 
-            download_from_dl_info(&dl_info, all_variables.env_variables.main_dir_path);
-
-            return;
+            break;
         }
         if (strcasecmp(argv[poz], "-u") == 0) {
             if (poz + 2 > arg) {
@@ -379,7 +377,6 @@ void dl_ui(int arg, char** argv) {
             poz++;
         }
     }
-    printf("");
     download_from_dl_info(&dl_info, all_variables.env_variables.main_dir_path);
 }
 void ui(int arg, char* args[]){
@@ -400,7 +397,6 @@ void ui(int arg, char* args[]){
 
 
 int main(int argc, char *argv[]){
-    printf("main is working\n");
     char path[MAX_PATH];
     if (GetModuleFileName(NULL, path, MAX_PATH) == 0) {
         printf("Failed to get executable path. Error code: %lu\n", GetLastError());

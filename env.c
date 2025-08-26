@@ -83,7 +83,6 @@ void print_all_variables(ALL_VARIABLES* all_variables) {
 int read_all_variables(ALL_VARIABLES* all_variables) {
     int errors = 0;
     FILE* file_env_variables_path = fopen(all_variables->env_variables.env_variables_path, "r");
-    printf("env path = %s\n", all_variables->env_variables.env_variables_path);
     if (file_env_variables_path == NULL) errors |= ERROR_env_variables_path;
 
     if (errors > 0) return errors;
@@ -129,7 +128,6 @@ void deal_with_errors(int errors) {
     }
 }
 int init_all_vars(ALL_VARIABLES* all_variables, char* full_exe_path) {
-    printf("full exe path = %s\n", full_exe_path);
     char path[MAX_STRING_LENGHT];
     strcpy(path, full_exe_path);
     int len = strlen(full_exe_path);
