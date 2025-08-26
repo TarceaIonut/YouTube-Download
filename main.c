@@ -144,11 +144,28 @@ int p_command(DIRECTORY** directory, DIRECTORY_LIST* directory_list, char* path)
     add_all_sub_dirs_to_list(dir, directory_list);
     return 0;
 }
+boolean get_number_from_string(int *number, char* string) {
+    char* endptr;
+    *number = strtol(string, &endptr, 10);
+
+    if (errno == ERANGE) {
+
+    }
+    else if (endptr == string || *endptr != '\0') {
+
+    }
+    else {
+        return 1;
+    }
+    return 0;
+}
+
 void dir_ui(int arg, char** argv) {
     int function = 0;
     int multiple_functions = 0;
     char* numbers_for_order = NULL;
     int poz = 0;
+    char *cut_poz, *cut_size;
     DIRECTORY* directory = NULL;
     DIRECTORY_LIST* directory_list = directory_list_new();
     while (poz < arg) {
@@ -205,7 +222,16 @@ void dir_ui(int arg, char** argv) {
             function = F_ORDER;
             numbers_for_order = argv[poz+1];
             poz += 2;
-        }else {
+        }else if (strcasecmp(argv[poz], "--cut") == 0) {
+            if (poz + 3 > arg) {
+                break;
+            }
+            cut_poz = argv[poz+1];
+            cut_size = argv[poz+2];
+            function = F_CUT;
+            poz += 3;
+        }
+        else {
             printf("Unknown option: %s\n", argv[poz]);
             poz++;
         }
@@ -218,6 +244,13 @@ void dir_ui(int arg, char** argv) {
         directory_free(&all_variables.temporary_variables.temporary_dir);
         all_variables.temporary_variables.temporary_dir = directory;
     }
+    if (function == F_CUT) {
+        int poz;
+        int size;
+        if (get_number_from_string(&poz, cut_poz) && get_number_from_string(&size, cut_size)) {
+            cut_chars_from_directory_list(directory_list, poz, size);
+        }
+    }
     if (function == F_SHOW) {
         int nr_digits = get_nr_digits(directory_list->nr_directories);
         for (int i = 0; i < directory_list->nr_directories; i++) {
@@ -229,17 +262,8 @@ void dir_ui(int arg, char** argv) {
         char* token = strtok(numbers_for_order, " ");
         char *endptr;
         while (token != NULL && nr_numbers < directory_list->nr_directories) {
-            numbers[nr_numbers] = strtol(token, &endptr, 10); // Base 10 for decimal conversion
 
-            if (errno == ERANGE) {
-
-            }
-            else if (endptr == token || *endptr != '\0') {
-
-            }
-            else if (numbers[nr_numbers] > INT_MAX || numbers[nr_numbers] < INT_MIN) {
-
-            }else if (numbers[nr_numbers] >= 0 && numbers[nr_numbers] < directory_list->nr_directories) {
+            if (get_number_from_string(numbers + nr_numbers, token)) {
                 nr_numbers++;
             }
 

@@ -64,3 +64,14 @@ int helper_concat_strings_to_path(char path[], char** strings, int nr_strings) {
     }
     return current_poz;
 }
+int cut_chars_from_string(char* string, int poz, int size) {
+    int len = strlen(string);
+    if (len <= poz + size) {
+        return -1;
+    }
+    for (int i = poz; i < len - size; i++) {
+        string[i] = string[i + size];
+    }
+    string[len - size] = 0;
+    return size;
+}

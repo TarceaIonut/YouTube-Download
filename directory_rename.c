@@ -67,7 +67,17 @@ int order_directory_list(DIRECTORY_LIST* dir_list, int numbers[], int nr_numbers
     free(ordered_list->directories_list);
     return 1;
 }
-
+void cut_chars_from_directory(DIRECTORY* dir, int poz, int size) {
+    char new_name[MAX_PATH];
+    strcpy(new_name, dir->main_directory.cFileName);
+    cut_chars_from_string(new_name, poz, size);
+    rename_directory(dir, new_name);
+}
+void cut_chars_from_directory_list(DIRECTORY_LIST* dir_list, int poz, int size) {
+    for (int i = 0; i < dir_list->nr_directories; i++) {
+        cut_chars_from_directory(dir_list->directories_list[i], poz, size);
+    }
+}
 
 
 // int main() {
