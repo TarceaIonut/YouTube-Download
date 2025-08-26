@@ -412,16 +412,4 @@ int main(int argc, char *argv[]){
         return 0;
     }
     ui(argc - 1, argv + 1);
-
-    // download(
-    //     DEFAULT_DL_OPTIONS,
-    //     "D:/Music/Slipknot/The End, So Far/%(playlist_index)s - %(title)s.%(ext)s",
-    //     "https://www.youtube.com/watch?v=46icYYT_Gpg&list=PLsT9douBcx9-2dtz83f3MSNAzyawjsUND");
-
-
-
-    // DIRECTORY* dir = directory_new("D:/Ionut/A.txt", NULL);
-    // //DIRECTORY* dir = directory_new("nigger", NULL);
-    // rename_directory_with_number(dir, "B.txt", 10, 3);
-    // PRINT_DIRECTORY(dir, S_NAME | S_PATH | FILE_TYPE | DIR_TYPE);
 }
