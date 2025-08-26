@@ -1,0 +1,1 @@
+gcc main.c directory.c yt_download.c string_helper_functions.c env.c directory_search.c directory_rename.c -o main -g

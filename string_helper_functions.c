@@ -10,7 +10,7 @@
 
 char* helper_get_quotation_string(int *poz, int argc, char** argv, int string_length, char string[]) {
     if (*poz >= argc) {
-        return nullptr;
+        return NULL;
     }
     if (argv[*poz][0] != '\"') {
         *poz += 1;
@@ -53,4 +53,14 @@ int helper_change_path_with_new_name(char** path, char* new_name){
     // printf("free\n");
     *path = new_path;
     return 1;
+}
+int helper_concat_strings_to_path(char path[], char** strings, int nr_strings) {
+    int current_poz = 0;
+    for (int i = 0; i < nr_strings; i++) {
+        int len = strlen(strings[i]);
+        strcpy(path + current_poz, strings[i]);
+        current_poz += len;
+        path[current_poz++] = '/';
+    }
+    return current_poz;
 }

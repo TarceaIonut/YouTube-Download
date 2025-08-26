@@ -10,4 +10,6 @@ add_executable(Youtube_Download_v2 main.c
         directory.c
         string_helper_functions.h
         string_helper_functions.c
-        string_helper_functions.c)
+        string_helper_functions.c
+        yt_download.c
+        yt_download.h)

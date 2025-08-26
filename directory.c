@@ -24,7 +24,7 @@ int directory_list_free(DIRECTORY_LIST** dir) {
     if (*dir != NULL) {
         free((*dir)->directories_list);
         free(*dir);
-        *dir = nullptr;
+        *dir = NULL;
         return 1;
     }
     return 0;
@@ -34,11 +34,11 @@ int directory_list_free_dirs(DIRECTORY_LIST** dir) {
     if ((*dir)->directories_list != NULL) {
         for (int i = 0; i < (*dir)->nr_directories; i++) {
             directory_free(&(*dir)->directories_list[i]);
-            (*dir)->directories_list[i] = nullptr;
+            (*dir)->directories_list[i] = NULL;
         }
         free((*dir)->directories_list);
         free(*dir);
-        *dir = nullptr;
+        *dir = NULL;
     }
     return 1;
 }
@@ -46,7 +46,7 @@ void directory_free(DIRECTORY** directories) {
     if (*directories == NULL) return;
     directory_list_free_dirs(&(*directories)->directory_list);
     free(*directories);
-    *directories = nullptr;
+    *directories = NULL;
 }
 DIRECTORY_LIST* directory_list_new() {
     DIRECTORY_LIST* new_directories_list = malloc(sizeof(DIRECTORY_LIST));
@@ -80,7 +80,7 @@ DIRECTORY* directory_new(char* path, DIRECTORY* parrent){
     int rez = get_data_for_current_directory(path, &directory->main_directory);
     if (rez == 0) {
         free(directory);
-        return nullptr;
+        return NULL;
     }
     directory->parent_directory = parrent;
     directory->path = path;
@@ -177,7 +177,7 @@ DIRECTORY* directory_list_find_by_name(DIRECTORY_LIST* list, char* name) {
                 return list->directories_list[i];
             }
     }
-    return nullptr;
+    return NULL;
 }
 
 

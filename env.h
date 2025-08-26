@@ -6,20 +6,14 @@
 #define ENV_H
 
 #define ERROR_env_variables_path 1
-//#define ERROR_out_path 2
-#define ERROR_yt_dl_path 4
-#define ERROR_main_dir_path 8
-//#define ERROR_ffmpeg_path 16
+#define ERROR_main_dir_path 2
+
 
 #define DEFAULT_SIZE 16
 
 typedef struct ENV_VARIABLES{
-    int default__variables_path;
-    int default_yt_dl_path;
+    char default_download_options[MAX_STRING_LENGHT];
     char env_variables_path[MAX_STRING_LENGHT];
-    //char out_path[MAX_STRING_LENGHT];
-    char yt_dlp_path[MAX_STRING_LENGHT];
-    //char ffmpeg_path[MAX_STRING_LENGHT];
     char main_dir_path[MAX_STRING_LENGHT];
 }ENV_VARIABLES;
 
@@ -27,8 +21,9 @@ typedef struct TEMPORARY_VARIABLES{
     char band[MAX_STRING_LENGHT];
     char album[MAX_STRING_LENGHT];
     char song[MAX_STRING_LENGHT];
-    DIRECTORY* dir;
-    DIRECTORY_LIST* dir_list;
+    DIRECTORY* working_dir;
+    DIRECTORY* temporary_dir;
+    DIRECTORY_LIST* temporary_dir_list;
 }TEMPORARY_VARIABLES;
 
 typedef struct ABV_VARIABLE{

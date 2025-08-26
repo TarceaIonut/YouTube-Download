@@ -4,12 +4,14 @@
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <limits.h>
+#include <errno.h>
 
 #include "directory.h"
 #include "env.h"
 #include "directory_search.h"
 #include "directory_rename.h"
-
+#include "yt_download.h"
 
 ALL_VARIABLES all_variables;
 
@@ -25,6 +27,8 @@ void help_ui() {
     printf("8: ui mode\n");
     printf("9: exit\n");
 }
+
+
 
 #define FLAGS_TOUCHED    0x0100
 #define RECURSIVE_FLAG   0x0200
@@ -90,7 +94,7 @@ void ui_show(int arg, char **argv) {
                 break;
             }
             ALL* all = new_ALL_from_string(argv[poz+1][0], argv[poz+2], argv[poz+3], argv[poz+4]);
-            get_all_correct_dirs(all_variables.temporary_variables.dir, all, dirs_to_list);
+            get_all_correct_dirs(all_variables.temporary_variables.working_dir, all, dirs_to_list);
             poz += 5;
         }else {
             printf("Unknown option: %s\n", argv[poz]);
@@ -127,38 +131,71 @@ enum FUNCTIONS {
     F_RENAME = 4,
     F_MOVE = 5,
     F_CUT = 6,
-    F_SAVE_LIST = 100,
+    F_SAVE_LIST = 0x100,
+    F_SAVE_DIR = 0x200
 };
+int p_command(DIRECTORY** directory, DIRECTORY_LIST* directory_list, char* path) {
+    DIRECTORY* dir = directory_new(path, NULL);
+    if (dir == NULL) {
+        return ERROR_INCORRECT_PATH;
+    }
+    *directory = dir;
+    directory_make_from_path_recursive(dir, path, 1);
+    add_all_sub_dirs_to_list(dir, directory_list);
+    return 0;
+}
 void dir_ui(int arg, char** argv) {
     int function = 0;
-    char* numbers_for_order = nullptr;
+    int multiple_functions = 0;
+    char* numbers_for_order = NULL;
     int poz = 0;
-    DIRECTORY* directory;
+    DIRECTORY* directory = NULL;
     DIRECTORY_LIST* directory_list = directory_list_new();
     while (poz < arg) {
         if (strcasecmp(argv[poz], "-p") == 0) {
-            if (poz + 2 > arg) {
-                break;
-            }
-            char* path = argv[poz + 1];
+            if (poz + 2 > arg) break;
+            p_command(&directory, directory_list, argv[poz + 1]);
             poz += 2;
-            DIRECTORY* dir = directory_new(path, NULL);
-            if (dir == NULL) {
-                continue;
-            }
-            directory = dir;
-            directory_make_from_path_recursive(dir, path, 1);
-            add_all_sub_dirs_to_list(dir, directory_list);
         }else if (strcasecmp(argv[poz], "-m") == 0) {
             if (poz + 5 > arg) {
                 break;
             }
             ALL* all = new_ALL_from_string(argv[poz+1][0], argv[poz+2], argv[poz+3], argv[poz+4]);
-            get_all_correct_dirs(all_variables.temporary_variables.dir, all, directory_list);
+            get_all_correct_dirs(all_variables.temporary_variables.working_dir, all, directory_list);
+            free_ALL(all);
             poz += 5;
+        }else if (strcasecmp(argv[poz], "-saveL") == 0) {
+            multiple_functions |= F_SAVE_LIST;
+        }
+        else if (strcasecmp(argv[poz], "-saveD") == 0) {
+            multiple_functions |= F_SAVE_DIR;
         }
         else if (strcasecmp(argv[poz], "--show") == 0) {
             function = F_SHOW;
+            poz++;
+        }
+        else if (strcasecmp(argv[poz], "-currL") == 0) {
+            DIRECTORY_LIST* Tlist = all_variables.temporary_variables.temporary_dir_list;
+            if (Tlist != NULL && Tlist->nr_directories != 0) {
+                directory_list_add_dir_list(directory_list, Tlist);
+            }
+            poz++;
+        }
+        else if (strcasecmp(argv[poz], "-currD") == 0) {
+            DIRECTORY* Tdir = all_variables.temporary_variables.temporary_dir;
+            if (Tdir != NULL) {
+                directory = Tdir;
+            }
+            poz++;
+        }
+        else if (strcasecmp(argv[poz], "-currSD") == 0) {
+            DIRECTORY* Tdir = all_variables.temporary_variables.temporary_dir;
+            if (Tdir != NULL) {
+                DIRECTORY_LIST* Tlist = Tdir->directory_list;
+                if (Tlist != NULL && Tlist->nr_directories != 0) {
+                    directory_list_add_dir_list(directory_list, Tlist);
+                }
+            }
             poz++;
         }
         else if (strcasecmp(argv[poz], "--order") == 0) {
@@ -172,6 +209,14 @@ void dir_ui(int arg, char** argv) {
             printf("Unknown option: %s\n", argv[poz]);
             poz++;
         }
+    }
+    if (multiple_functions & F_SAVE_LIST) {
+        directory_list_free(&all_variables.temporary_variables.temporary_dir_list);
+        all_variables.temporary_variables.temporary_dir_list = directory_list;
+    }
+    if (multiple_functions & F_SAVE_DIR) {
+        directory_free(&all_variables.temporary_variables.temporary_dir);
+        all_variables.temporary_variables.temporary_dir = directory;
     }
     if (function == F_SHOW) {
         int nr_digits = get_nr_digits(directory_list->nr_directories);
@@ -202,6 +247,140 @@ void dir_ui(int arg, char** argv) {
         }
         order_directory_list(directory_list, numbers, nr_numbers);
     }
+    if (multiple_functions & F_SAVE_LIST == 0) {
+        directory_list_free(&directory_list);
+    }
+    if (multiple_functions & F_SAVE_DIR == 0) {
+        directory_free(&directory);
+    }
+}
+void dl_ui(int arg, char** argv) {
+    DL_INFO dl_info;
+    dl_info_init(&dl_info);
+
+    int poz = 0;
+    while (poz < arg) {
+        if ((int)strcasecmp(argv[poz], "simple") == 0) {
+            if (poz + 4 > arg) {
+                break;
+            }
+            // char band[MAX_STRING_LENGHT];
+            // char album[MAX_STRING_LENGHT];
+            // char url[MAX_STRING_LENGHT];
+
+
+            // fgets(band, sizeof(band), stdin);
+            // fgets(album, sizeof(album), stdin);
+            // fgets(url, sizeof(url), stdin);
+
+            char* band;
+            char* album;
+            char* url;
+
+            band = argv[poz+1];
+            album = argv[poz+2];
+            url = argv[poz+3];
+
+            dl_info.flags |= ORDER;
+            dl_info.search_string = url;
+
+            dl_info.nr_path_strings = 2;
+            if (dl_info.path_strings != NULL) free(dl_info.path_strings);
+            dl_info.path_strings = malloc(2 * sizeof(char*));
+            dl_info.path_strings[0] = band;
+            dl_info.path_strings[1] = album;
+
+            download_from_dl_info(&dl_info, all_variables.env_variables.main_dir_path);
+
+            return;
+        }
+        if (strcasecmp(argv[poz], "-u") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            dl_info.search_string = argv[poz+1];
+            poz += 2;
+        }
+        if (strcasecmp(argv[poz], "-op") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            dl_info.overwrite_options = argv[poz+1];
+            poz += 2;
+        }
+        else if (strcasecmp(argv[poz], "-o") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            dl_info.overwrite_output_format = argv[poz+1];
+            poz += 2;
+        }
+        else if (strcasecmp(argv[poz], "-t") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            dl_info.overwrite_title = argv[poz+1];
+            poz += 2;
+        }
+        else if (strcasecmp(argv[poz], "--search") == 0) {
+            dl_info.flags |= SEARCH;
+            poz++;
+        }
+        else if (strcasecmp(argv[poz], "--order") == 0) {
+            dl_info.flags |= ORDER;
+            poz++;
+        }
+        else if (strcasecmp(argv[poz], "-url") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            dl_info.search_string = argv[poz+1];
+            poz += 2;
+        }
+        else if (strcasecmp(argv[poz], "-start_with") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            dl_info.start_with_string = argv[poz+1];
+            poz += 2;
+        }
+        else if (strcasecmp(argv[poz], "-path") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            int nr = 0;
+            while (nr + poz + 1 < arg && strcasecmp(argv[nr + poz + 1], "-end") != 0) {
+                nr++;
+            }
+
+            dl_info.nr_path_strings = nr;
+            if (dl_info.path_strings != NULL) free(dl_info.path_strings);
+            dl_info.path_strings = malloc(nr * sizeof(char*));
+
+            for (int i = 0; i < nr; i++) {
+                dl_info.path_strings[i] = argv[i + poz + 1];
+            }
+
+            poz += nr + 2;
+        }
+        else if (strcasecmp(argv[poz], "-ba") == 0) {
+            if (poz + 3 > arg) {
+                break;
+            }
+            dl_info.nr_path_strings = 2;
+            if (dl_info.path_strings != NULL) free(dl_info.path_strings);
+            dl_info.path_strings = malloc(2 * sizeof(char*));
+            dl_info.path_strings[0] = argv[poz+1];
+            dl_info.path_strings[1] = argv[poz+2];
+            poz += 3;
+        }
+        else {
+            dl_info.search_string = argv[poz];
+            poz++;
+        }
+    }
+    printf("");
+    download_from_dl_info(&dl_info, all_variables.env_variables.main_dir_path);
 }
 void ui(int arg, char* args[]){
     if (arg == 0) {
@@ -214,20 +393,31 @@ void ui(int arg, char* args[]){
     else if (strcasecmp(args[0], "var") == 0) {
         var_ui(arg - 1, args + 1);
     }
-
+    else if (strcasecmp(args[0], "dl") == 0) {
+        dl_ui(arg - 1, args + 1);
+    }
 }
-int set_up_env_vars() {
 
-    return 1;
-}
 
 int main(int argc, char *argv[]){
-    int rez = init_all_vars(&all_variables, argv[0]);
+    printf("main is working\n");
+    char path[MAX_PATH];
+    if (GetModuleFileName(NULL, path, MAX_PATH) == 0) {
+        printf("Failed to get executable path. Error code: %lu\n", GetLastError());
+        exit(0);
+    }
+    int rez = init_all_vars(&all_variables, path);
     if (rez > 0) {
         deal_with_errors(rez);
         return 0;
     }
     ui(argc - 1, argv + 1);
+
+    // download(
+    //     DEFAULT_DL_OPTIONS,
+    //     "D:/Music/Slipknot/The End, So Far/%(playlist_index)s - %(title)s.%(ext)s",
+    //     "https://www.youtube.com/watch?v=46icYYT_Gpg&list=PLsT9douBcx9-2dtz83f3MSNAzyawjsUND");
+
 
 
     // DIRECTORY* dir = directory_new("D:/Ionut/A.txt", NULL);

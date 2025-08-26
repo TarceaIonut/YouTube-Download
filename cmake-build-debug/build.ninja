@@ -85,6 +85,12 @@ build CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj: C_COMPIL
   OBJECT_DIR = CMakeFiles\Youtube_Download_v2.dir
   OBJECT_FILE_DIR = CMakeFiles\Youtube_Download_v2.dir
 
+build CMakeFiles/Youtube_Download_v2.dir/yt_download.c.obj: C_COMPILER__Youtube_Download_v2_unscanned_Debug C$:/Users/Ionut/CLionProjects/Youtube-Download$ v2/yt_download.c || cmake_object_order_depends_target_Youtube_Download_v2
+  DEP_FILE = CMakeFiles\Youtube_Download_v2.dir\yt_download.c.obj.d
+  FLAGS = -g -std=gnu2x -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Youtube_Download_v2.dir
+  OBJECT_FILE_DIR = CMakeFiles\Youtube_Download_v2.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Youtube_Download_v2
@@ -93,7 +99,7 @@ build CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj: C_COMPIL
 #############################################
 # Link the executable Youtube_Download_v2.exe
 
-build Youtube_Download_v2.exe: C_EXECUTABLE_LINKER__Youtube_Download_v2_Debug CMakeFiles/Youtube_Download_v2.dir/main.c.obj CMakeFiles/Youtube_Download_v2.dir/env.c.obj CMakeFiles/Youtube_Download_v2.dir/directory_search.c.obj CMakeFiles/Youtube_Download_v2.dir/directory_rename.c.obj CMakeFiles/Youtube_Download_v2.dir/directory.c.obj CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj
+build Youtube_Download_v2.exe: C_EXECUTABLE_LINKER__Youtube_Download_v2_Debug CMakeFiles/Youtube_Download_v2.dir/main.c.obj CMakeFiles/Youtube_Download_v2.dir/env.c.obj CMakeFiles/Youtube_Download_v2.dir/directory_search.c.obj CMakeFiles/Youtube_Download_v2.dir/directory_rename.c.obj CMakeFiles/Youtube_Download_v2.dir/directory.c.obj CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj CMakeFiles/Youtube_Download_v2.dir/yt_download.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Youtube_Download_v2.dir

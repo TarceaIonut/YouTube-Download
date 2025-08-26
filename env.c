@@ -56,8 +56,6 @@ int set_string(char* string, char* new_string) {
 
 void print_environment_variables(ENV_VARIABLES* env_variables) {
     printf("Environment variables:\n");
-    //printf("out_path: %s\n", env_variables->out_path);
-    printf("yt_dl_path: %s\n", env_variables->yt_dlp_path);
     printf("main_dir_path: %s\n", env_variables->main_dir_path);
 }
 void printf_current_variables(TEMPORARY_VARIABLES* curr_variables) {
@@ -79,13 +77,13 @@ void print_all_variables(ALL_VARIABLES* all_variables) {
     printf_current_variables(&all_variables->temporary_variables);
     print_abv_variables(&all_variables->abv_variables);
     all_variables->abv_variables.size = 0;
-    all_variables->abv_variables.variable_list = nullptr;
+    all_variables->abv_variables.variable_list = NULL;
     all_variables->abv_variables.max_size = 0;
 }
 int read_all_variables(ALL_VARIABLES* all_variables) {
     int errors = 0;
     FILE* file_env_variables_path = fopen(all_variables->env_variables.env_variables_path, "r");
-
+    printf("env path = %s\n", all_variables->env_variables.env_variables_path);
     if (file_env_variables_path == NULL) errors |= ERROR_env_variables_path;
 
     if (errors > 0) return errors;
@@ -102,12 +100,15 @@ int read_all_variables(ALL_VARIABLES* all_variables) {
         if (string1_rez != 1 || string2_rez != 1) break;
 
         if (strcasecmp(string1, "abv") == 0) {
+            string3_rez = fscanf(file_env_variables_path, "%s", string3);
+            if (string3_rez != 1) break;
             add_abv_vars(&all_variables->abv_variables, string2, string3);
-        }else if (strcasecmp(string1, "yt_dl_path") == 0) {
-            strcpy(all_variables->env_variables.yt_dlp_path, string2);
         }else if (strcasecmp(string1, "main_dir_path") == 0) {
             strcpy(all_variables->env_variables.main_dir_path, string2);
-        }else {
+        }else if (strcasecmp(string1, "default_download_options") == 0) {
+            strcpy(all_variables->env_variables.default_download_options, string2);
+        }
+        else {
             printf("command idk man:%s\n", string1);
             break;
         }
@@ -116,9 +117,6 @@ int read_all_variables(ALL_VARIABLES* all_variables) {
 }
 int verify_all_variables(ALL_VARIABLES* all_variables) {
     int errors = 0;
-    if (!check_file(all_variables->env_variables.yt_dlp_path, FILE_TYPE)) errors |= ERROR_yt_dl_path;
-    // if (check_file(all_variables->env_variables.ffmpeg_path, FILE_TYPE)) errors |= ERROR_ffmpeg_path;
-    // if (check_file(all_variables->env_variables.out_path, DIR_TYPE)) errors |= ERROR_out_path;
     if (!check_file(all_variables->env_variables.main_dir_path, DIR_TYPE)) errors |= ERROR_main_dir_path;
 
     return errors;
@@ -126,15 +124,12 @@ int verify_all_variables(ALL_VARIABLES* all_variables) {
 void deal_with_errors(int errors) {
     if (errors & ERROR_env_variables_path) {
         printf("Environment variables path incorrect:\n");
-    }else if (errors & ERROR_yt_dl_path) {
-        printf("yt-dlp path incorrect:\n");
-    // }else if (errors & ERROR_ffmpeg_path) {
-    //     printf("ffmpeg path incorrect:\n");
     }else if (errors & ERROR_main_dir_path) {
         printf("Main output path incorrect:\n");
     }
 }
 int init_all_vars(ALL_VARIABLES* all_variables, char* full_exe_path) {
+    printf("full exe path = %s\n", full_exe_path);
     char path[MAX_STRING_LENGHT];
     strcpy(path, full_exe_path);
     int len = strlen(full_exe_path);
@@ -144,12 +139,12 @@ int init_all_vars(ALL_VARIABLES* all_variables, char* full_exe_path) {
             break;
         }
     }
+    strcpy(all_variables->env_variables.default_download_options, "");
     return init_all_vars_from_current_path(all_variables, path);
 }
 int init_all_vars_from_current_path(ALL_VARIABLES* all_variables, char* current_path){
     sprintf(all_variables->env_variables.env_variables_path, "%s\\%s", current_path, "env.txt");
-    sprintf(all_variables->env_variables.yt_dlp_path, "%s\\%s", current_path, "yt-dlp.exe");
-    //sprintf(all_variables->env_variables.ffmpeg_path, "%s/%s", current_path, "ffmpeg.exe");
+
 
     int errors = read_all_variables(all_variables);
 
@@ -159,7 +154,9 @@ int init_all_vars_from_current_path(ALL_VARIABLES* all_variables, char* current_
 
     if (errors > 0) return errors;
 
-    all_variables->temporary_variables.dir = directory_make_music_dir(all_variables->env_variables.main_dir_path);
+    all_variables->temporary_variables.working_dir = directory_make_music_dir(all_variables->env_variables.main_dir_path);
+    all_variables->temporary_variables.temporary_dir = NULL;
+    all_variables->temporary_variables.temporary_dir_list = directory_list_new();
 
     return 0;
 }
