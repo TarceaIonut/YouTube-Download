@@ -1,23 +1,9 @@
 # ninja log v6
-19	1732	7762524261347317	CMakeFiles/Youtube_Download_v2.dir/directory_rename.c.obj	d93ab1ebef522570
+42	1255	7779052662602570	CMakeFiles/Youtube_Download_v2.dir/directory_rename.c.obj	d93ab1ebef522570
 19	1420	7762039355900157	CMakeFiles/Youtube_Download_v2.dir/directory_search.c.obj	aecebd5907eb0dc3
 17	1226	7775740532600257	CMakeFiles/Youtube_Download_v2.dir/directory.c.obj	fabbe73672ed4469
-45	1565	7778148504004178	CMakeFiles/Youtube_Download_v2.dir/main.c.obj	d94315b33b2840b5
-52	1564	7778148504073954	CMakeFiles/Youtube_Download_v2.dir/env.c.obj	5f8b0e9b1b8db953
-1565	1917	7778148519196779	Youtube_Download_v2.exe	b1abe2abbb86730
-21	130	7775740532640282	CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj	98f90339cf8130fa
-58	1563	7778148504133867	CMakeFiles/Youtube_Download_v2.dir/yt_download.c.obj	34316c5b9a2189bb
-7	1030	7778151010921427	CMakeFiles/Youtube_Download_v2.dir/main.c.obj	d94315b33b2840b5
-1031	1173	7778151021161039	Youtube_Download_v2.exe	b1abe2abbb86730
-58	1178	7778463506156377	CMakeFiles/Youtube_Download_v2.dir/env.c.obj	5f8b0e9b1b8db953
-47	1179	7778463506036365	CMakeFiles/Youtube_Download_v2.dir/main.c.obj	d94315b33b2840b5
-68	1199	7778463506246373	CMakeFiles/Youtube_Download_v2.dir/yt_download.c.obj	34316c5b9a2189bb
-1199	1500	7778463517556369	Youtube_Download_v2.exe	b1abe2abbb86730
-47	342	7779052662652567	CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj	98f90339cf8130fa
-42	1255	7779052662602570	CMakeFiles/Youtube_Download_v2.dir/directory_rename.c.obj	d93ab1ebef522570
-53	1256	7779052662712566	CMakeFiles/Youtube_Download_v2.dir/yt_download.c.obj	34316c5b9a2189bb
-29	1256	7779052662482556	CMakeFiles/Youtube_Download_v2.dir/main.c.obj	d94315b33b2840b5
-36	1263	7779052662542963	CMakeFiles/Youtube_Download_v2.dir/env.c.obj	5f8b0e9b1b8db953
-1263	1620	7779052674813570	Youtube_Download_v2.exe	b1abe2abbb86730
 7	1091	7779054441827969	CMakeFiles/Youtube_Download_v2.dir/main.c.obj	d94315b33b2840b5
+36	1263	7779052662542963	CMakeFiles/Youtube_Download_v2.dir/env.c.obj	5f8b0e9b1b8db953
 1092	1230	7779054452667842	Youtube_Download_v2.exe	b1abe2abbb86730
+47	342	7779052662652567	CMakeFiles/Youtube_Download_v2.dir/string_helper_functions.c.obj	98f90339cf8130fa
+53	1256	7779052662712566	CMakeFiles/Youtube_Download_v2.dir/yt_download.c.obj	34316c5b9a2189bb
