@@ -10,4 +10,5 @@ int helper_change_path_with_new_name(char** path, char* new_name);
 int helper_concat_strings_to_path(char path[], char** strings, int nr_strings);
 int cut_chars_from_string(char* string, int poz, int size);
 
+
 #endif //STRING_HELPER_FUNCTIONS_H
