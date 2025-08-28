@@ -8,6 +8,8 @@
 
 #include "string_helper_functions.h"
 
+#include <Windows.h>
+
 char* helper_get_quotation_string(int *poz, int argc, char** argv, int string_length, char string[]) {
     if (*poz >= argc) {
         return NULL;
@@ -74,4 +76,54 @@ int cut_chars_from_string(char* string, int poz, int size) {
     }
     string[len - size] = 0;
     return size;
+}
+void new_command(char*** commands, int* nr_commands, int* max_nr_commands) {
+    (*nr_commands)++;
+    if (*nr_commands > *max_nr_commands) {
+        *max_nr_commands += *nr_commands;
+    }
+    char** temp = realloc(*commands, *max_nr_commands * sizeof(char*));
+    *commands = temp;
+}
+void set_command(char** commands, int nr_commands, int offset, int size, char* string) {
+    commands[nr_commands - 1] = malloc(size + 1);
+    memcpy(commands[nr_commands - 1], string + offset, size);
+    commands[nr_commands - 1][size] = 0;
+}
+int helper_get_commands_from_string(char* string, char*** commands, int* nr_commands) {
+    *commands = NULL;
+    *nr_commands = 0;
+    int max_nr_commands = 0;
+    boolean in_quotes = 0;
+    int current_command_off = 0;
+    int current_command_size = 0;
+    int string_len = strlen(string);
+    boolean start_command = 0;
+    for (int i = 0; i < string_len; i++) {
+        if (string[i] == '\"') {
+            if (in_quotes) {
+                in_quotes = 0;
+                set_command(*commands, *nr_commands, current_command_off, i - current_command_off, string);
+            }
+            else {
+                in_quotes = 1;
+                current_command_off = i + 1;
+                new_command(commands, nr_commands, &max_nr_commands);
+            }
+        }
+        else if (string[i] == ' ' && !in_quotes && start_command) {
+            start_command = 0;
+            set_command(*commands, *nr_commands, current_command_off, i - current_command_off, string);
+        }
+        else if (string[i] != ' ' && !in_quotes && !start_command) {
+            start_command = 1;
+            current_command_off = i;
+            new_command(commands, nr_commands, &max_nr_commands);
+        }
+    }
+    if (!in_quotes && start_command) {
+        start_command = 0;
+        set_command(*commands, *nr_commands, current_command_off, string_len - current_command_off, string);
+    }
+    return *nr_commands;
 }

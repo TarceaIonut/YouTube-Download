@@ -1,0 +1,12 @@
+dl simple "Sabaton" "2005 - Primo Victoria" "https://www.youtube.com/watch?v=KVxTJ9Xb9Ec&list=PLA_zjX3swAf5RQLrnQI_W9Qp47Y8YyD2d"
+dl simple "Sabaton" "2006 - Attero Dominatus" "https://www.youtube.com/watch?v=8n5nuDKT8sc&list=PLA_zjX3swAf5Ma325nx3WNTA9ejIEE6g2"
+dl simple "Sabaton" "2007 - Metalizer" "https://www.youtube.com/watch?v=Nt14OH4RgoQ&list=PLA_zjX3swAf7YWsxcYAi70y3eCjGkD7ki&pp=0gcJCXwEOCosWNin"
+dl simple "Sabaton" "2008 - The Art of War" "https://www.youtube.com/watch?v=ICfzQVh3lvs&list=PLA_zjX3swAf7tnARLP0tmpC1U8OIooh0v"
+dl simple "Sabaton" "2010 - Coat of Arms" "https://www.youtube.com/watch?v=3OaJi7SYUjM&list=PLA_zjX3swAf6VYOZHj7OEYs6_DnUeWMqs"
+dl simple "Sabaton" "2012 - Carolus Rex" "https://www.youtube.com/watch?v=KkszNmr6Qh0&list=PLA_zjX3swAf54Oc3hDM44WPxUSvAgz8Fd"
+dl simple "Sabaton" "2014 - Heroes" "https://www.youtube.com/watch?v=jcemHIqmkYI&list=PLA_zjX3swAf6gmFND0QcrTWyttyZLZUjf"
+dl simple "Sabaton" "2016 - The Last Stand" "https://www.youtube.com/watch?v=hm-PT_FdAJU&list=PLA_zjX3swAf5CUJYtg208KNrFPEEWmW24"
+dl simple "Sabaton" "2019 - The Great War" "https://www.youtube.com/watch?v=t8qJi7HURFA&list=PLA_zjX3swAf6_w-MNVZNLG8bGbKBhZP4G"
+dl simple "Sabaton" "2022 - The War to End All Wars" "https://www.youtube.com/watch?v=Xszx_9UPwV8&list=PLA_zjX3swAf7XXdhrImVhKyS97US5bECY"
+dl simple "Sabaton" "2012 - Carolus Rex Swedish" "https://www.youtube.com/watch?v=n4MjBV-3yHE&list=PLA_zjX3swAf5jYsFwr8KDYG1RgbYC5jwQ"
+

@@ -11,6 +11,7 @@
 #include "env.h"
 #include "directory_search.h"
 #include "directory_rename.h"
+#include "string_helper_functions.h"
 #include "yt_download.h"
 
 ALL_VARIABLES all_variables;
@@ -39,6 +40,8 @@ void help_ui() {
 #define ERROR_INCORRECT_PATH 0x4000
 #define ERROR_ALL_CHOISE 0x8000
 #define DEFAULT_FLAGS FILE_TYPE | DIR_TYPE | S_NUMBER | S_NAME;
+
+void ui(int arg, char* args[]);
 
 void handle_errors_show(int flag) {
     if (flag & ERROR_NULL_DIR) {
@@ -168,6 +171,7 @@ void dir_ui(int arg, char** argv) {
     char *cut_poz, *cut_size;
     DIRECTORY* directory = NULL;
     DIRECTORY_LIST* directory_list = directory_list_new();
+    int what_to_print = S_NAME | S_NUMBER | S_TYPE | DIR_TYPE | FILE_TYPE;
     while (poz < arg) {
         if (strcasecmp(argv[poz], "-p") == 0) {
             if (poz + 2 > arg) break;
@@ -231,10 +235,59 @@ void dir_ui(int arg, char** argv) {
             function = F_CUT;
             poz += 3;
         }
+        else if (strcasecmp(argv[poz], "-s_path") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            if (strcasecmp(argv[poz+1], "0") == 0) what_to_print &= ~S_PATH;
+            else what_to_print |= S_PATH;
+            poz += 2;
+        }
+        else if (strcasecmp(argv[poz], "-s_number") == 0 || strcasecmp(argv[poz], "-s_nr") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            if (strcasecmp(argv[poz+1], "0") == 0) what_to_print &= ~S_NUMBER;
+            else what_to_print |= S_NUMBER;
+            poz += 2;
+        }
+        else if (strcasecmp(argv[poz], "-s_type") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            if (strcasecmp(argv[poz+1], "0") == 0) what_to_print &= ~S_TYPE;
+            else what_to_print |= S_TYPE;
+            poz += 2;
+        }
+        else if (strcasecmp(argv[poz], "-s_name") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            if (strcasecmp(argv[poz+1], "0") == 0) what_to_print &= ~S_NAME;
+            else what_to_print |= S_NAME;
+            poz += 2;
+        }
+        else if (strcasecmp(argv[poz], "-s_file") == 0) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            if (strcasecmp(argv[poz+1], "0") == 0) what_to_print &= ~FILE_TYPE;
+            else what_to_print |= FILE_TYPE;
+            poz += 2;
+        }
+        else if (strcasecmp(argv[poz], "-s_folder") == 0 || strcasecmp(argv[poz], "-s_dir") == 0  ) {
+            if (poz + 2 > arg) {
+                break;
+            }
+            if (strcasecmp(argv[poz+1], "0") == 0) what_to_print &= ~DIR_TYPE;
+            else what_to_print |= DIR_TYPE;
+            poz += 2;
+        }
         else {
             printf("Unknown option: %s\n", argv[poz]);
             poz++;
         }
+
     }
     if (multiple_functions & F_SAVE_LIST) {
         directory_list_free(&all_variables.temporary_variables.temporary_dir_list);
@@ -254,7 +307,7 @@ void dir_ui(int arg, char** argv) {
     if (function == F_SHOW) {
         int nr_digits = get_nr_digits(directory_list->nr_directories);
         for (int i = 0; i < directory_list->nr_directories; i++) {
-            PRINT_DIRECTORY(directory_list->directories_list[i], S_NAME | S_NUMBER | FILE_TYPE | DIR_TYPE | S_TYPE, i, nr_digits);
+            PRINT_DIRECTORY(directory_list->directories_list[i], what_to_print, i, nr_digits);
         }
     }else if (function == F_ORDER) {
         int numbers[directory_list->nr_directories];
@@ -403,6 +456,31 @@ void dl_ui(int arg, char** argv) {
     }
     download_from_dl_info(&dl_info, all_variables.env_variables.main_dir_path);
 }
+int read_and_execute_command(FILE* file) {
+    char buffer[1024];
+    fgets(buffer, 1024, file);
+    char** commands = NULL;
+    int commands_nr = 0;
+    helper_get_commands_from_string(buffer, &commands, &commands_nr);
+    ui(commands_nr, commands);
+}
+
+int execute_commands_from_file(char* file_name) {
+    FILE* file = fopen(file_name, "r");
+    if (file == NULL) {
+        return -1;
+    }
+    while (!feof(file)) {
+        read_and_execute_command(file);
+    }
+
+}
+int execute_commands_from_input(int nr_commands) {
+    for (int i = 0; i < nr_commands; i++) {
+        read_and_execute_command(stdin);
+    }
+}
+
 void ui(int arg, char* args[]){
     if (arg == 0) {
         printf("more params needed\n");
@@ -416,6 +494,19 @@ void ui(int arg, char* args[]){
     }
     else if (strcasecmp(args[0], "dl") == 0) {
         dl_ui(arg - 1, args + 1);
+    }
+    else if (strcasecmp(args[0], "fread") == 0) {
+        if (arg > 1) {
+            execute_commands_from_file(args[1]);
+        }
+    }
+    else if (strcasecmp(args[0], "read") == 0) {
+        if (arg > 1) {
+            int nr = 0;
+            if (get_number_from_string(&nr, args[1])) {
+                execute_commands_from_input(nr);
+            }
+        }
     }
 }
 

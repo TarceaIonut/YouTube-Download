@@ -9,6 +9,6 @@ char* helper_get_quotation_string(int *poz, int argc, char** argv, int string_le
 int helper_change_path_with_new_name(char** path, char* new_name);
 int helper_concat_strings_to_path(char path[], char** strings, int nr_strings);
 int cut_chars_from_string(char* string, int poz, int size);
-
+int helper_get_commands_from_string(char* string, char*** commands, int* nr_commands);
 
 #endif //STRING_HELPER_FUNCTIONS_H
