@@ -122,7 +122,6 @@ void runing_a_command(char* command_cmd){
     char* command = "cmd.exe /C \"start \"\" D:/ytdl.bat\"";
     new_process(command);
     close(fd);
-    free(command);
     sleep(1);
 }
 int check_album(){
@@ -284,6 +283,8 @@ void download(char download_options[], char output_format[], char search_command
 
     sprintf(download_command, "cmd /C start cmd /C yt-dlp %s -o \"%s/%s\" \"%s\"",
         download_options, main_path, output_format, search_command);
+
+    printf("%s\n", download_command);
 
     new_process(download_command);
 }

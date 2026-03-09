@@ -1,0 +1,4 @@
+dl simple "Tupac" "1991 - 2Pacalypse Now" "https://www.youtube.com/watch?v=aSmpiJQWpco&list=PLrTPWGTDOK5I7Ydaz3X1luMzqEuOfx8NK"
+dl simple "Tupac" "1993 - Strictly 4 My N.I.G.G.A.Z..." "https://www.youtube.com/watch?v=Hmi0VWf61Ec&list=PLDNtAuXIhbENe77QfZ6liCZAkPP1ofX2Z"
+dl simple "Tupac" "1995 - Me Against the World" "https://www.youtube.com/watch?v=K1v_aHQHC0s&list=PLmgVOmqth7Dum_vRlqBcKCIshFHuDVU9r"
+dl simple "Tupac" "1996 - All Eyez on Me" "https://www.youtube.com/watch?v=pDTFR7ivvgE&list=PLNvnh4cN6-ATtLWZMdVVkEwms-srSDCAz"

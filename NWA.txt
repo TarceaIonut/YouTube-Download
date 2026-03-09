@@ -1,0 +1,2 @@
+dl simple "N.W.A." "1989 - Straight Outta Compton" "https://www.youtube.com/watch?v=kIJeJK0iZDE&list=PLnif9Rfb5AdmjKArhI9bL1AmM1lD-1JPe"
+dl simple "N.W.A." "1991 - Niggaz4Life" "https://www.youtube.com/watch?v=Tu7OfIEto10&list=PL49oPojq58D_DX4oenE3lOw17lhxDPIqu"

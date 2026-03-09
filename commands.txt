@@ -1,12 +1,24 @@
-dl simple "Sabaton" "2005 - Primo Victoria" "https://www.youtube.com/watch?v=KVxTJ9Xb9Ec&list=PLA_zjX3swAf5RQLrnQI_W9Qp47Y8YyD2d"
-dl simple "Sabaton" "2006 - Attero Dominatus" "https://www.youtube.com/watch?v=8n5nuDKT8sc&list=PLA_zjX3swAf5Ma325nx3WNTA9ejIEE6g2"
-dl simple "Sabaton" "2007 - Metalizer" "https://www.youtube.com/watch?v=Nt14OH4RgoQ&list=PLA_zjX3swAf7YWsxcYAi70y3eCjGkD7ki&pp=0gcJCXwEOCosWNin"
-dl simple "Sabaton" "2008 - The Art of War" "https://www.youtube.com/watch?v=ICfzQVh3lvs&list=PLA_zjX3swAf7tnARLP0tmpC1U8OIooh0v"
-dl simple "Sabaton" "2010 - Coat of Arms" "https://www.youtube.com/watch?v=3OaJi7SYUjM&list=PLA_zjX3swAf6VYOZHj7OEYs6_DnUeWMqs"
-dl simple "Sabaton" "2012 - Carolus Rex" "https://www.youtube.com/watch?v=KkszNmr6Qh0&list=PLA_zjX3swAf54Oc3hDM44WPxUSvAgz8Fd"
-dl simple "Sabaton" "2014 - Heroes" "https://www.youtube.com/watch?v=jcemHIqmkYI&list=PLA_zjX3swAf6gmFND0QcrTWyttyZLZUjf"
-dl simple "Sabaton" "2016 - The Last Stand" "https://www.youtube.com/watch?v=hm-PT_FdAJU&list=PLA_zjX3swAf5CUJYtg208KNrFPEEWmW24"
-dl simple "Sabaton" "2019 - The Great War" "https://www.youtube.com/watch?v=t8qJi7HURFA&list=PLA_zjX3swAf6_w-MNVZNLG8bGbKBhZP4G"
-dl simple "Sabaton" "2022 - The War to End All Wars" "https://www.youtube.com/watch?v=Xszx_9UPwV8&list=PLA_zjX3swAf7XXdhrImVhKyS97US5bECY"
-dl simple "Sabaton" "2012 - Carolus Rex Swedish" "https://www.youtube.com/watch?v=n4MjBV-3yHE&list=PLA_zjX3swAf5jYsFwr8KDYG1RgbYC5jwQ"
+dl simple "Sepultura" "1986 - Morbid Visions" "https://www.youtube.com/watch?v=JB8Cle_mQtA&list=PLsT9douBcx993HKlHT508vMNfqSMj3iNa"
+dl simple "Sepultura" "1987 - Schizophrenia" "https://www.youtube.com/watch?v=4_HIS9OpWAY&list=PLsT9douBcx9-onY_Qsc-r4h6d3fJjmUNW"
+dl simple "Sepultura" "1989 - Beneath the Remains" "https://www.youtube.com/watch?v=GQ5ejXzQu3Q&list=PLsT9douBcx9-BiEZr_k5tSanwI53m8x5Q"
+dl simple "Sepultura" "1991 - Arise" "https://www.youtube.com/watch?v=Ubgc-4MNunQ&list=PLsT9douBcx9-rtSwJKOWiohVBHwbHohS9"
+dl simple "Sepultura" "1993 - Chaos A.D." "https://www.youtube.com/watch?v=bXZ3gEcOnA0&list=PLsT9douBcx99oTRExrpFCbcjNfnnN0UbQ"
+dl simple "Sepultura" "1996 - Roots" "https://www.youtube.com/watch?v=KuMlv7hmrFg&list=PLsT9douBcx99KWyjHUn5x_xNKI37WR7yB"
+dl simple "Sepultura" "1998 - Against" "https://www.youtube.com/watch?v=6IniB_PcRGY&list=PLsT9douBcx9_gkV69hEUXhnEtlH6l5YI0"
+dl simple "Sepultura" "2001 - Nation" "https://www.youtube.com/watch?v=qE2Bp5dLlko&list=PLsT9douBcx99kraZA2ozDH-5fidMiscJi&pp=0gcJCaIEOCosWNin"
+dl simple "Sepultura" "2002 - Revolusongs" "https://www.youtube.com/watch?v=OLc16Rg6orI&list=PLsT9douBcx98y3bpdXJXRX6CqE8yZbLZ-"
+dl simple "Sepultura" "2003 - Roorback" "https://www.youtube.com/watch?v=V-NjHjGZKGk&list=PLsT9douBcx995enQuezXrNwBS94mGn_vm"
+dl simple "Sepultura" "2006 - Dante XXI" "https://www.youtube.com/watch?v=pU5Bxa5oOmg&list=PLsT9douBcx9-eIk0XuplECoqFLMmO1iMX"
+dl simple "Sepultura" "2009 - A-Lex" "https://www.youtube.com/watch?v=ZItlqec8UEM&list=PLHTo__bpnlYVLUsGd_FwcDqjoKOvXOr5S"
+dl simple "Sepultura" "2011 - Kairos" "https://www.youtube.com/watch?v=aOoqQbl8uzk&list=PLsT9douBcx9-jnFe9RqHH6AtF14s8YpGl"
+dl simple "Sepultura" "2013 - The Mediator Between Head and Hands Must Be the Heart" "https://www.youtube.com/watch?v=nWPYd5yqJ5w&list=PLsT9douBcx98yL8V9U4WUnI9_qWIiaImf&pp=0gcJCaIEOCosWNin"
+dl simple "Sepultura" "2017 - Machine Messiah" "https://www.youtube.com/watch?v=vbd1tbg2wsE&list=PLsT9douBcx9_7zR6UiJagdB3Ot5vXX23I"
+dl simple "Sepultura" "2020 - Quadra" "https://www.youtube.com/watch?v=T65_WNfqLVc&list=PLsT9douBcx9-mj82qsTf2ppUdx6__PQdK"
+
+
+
+
+
+
+
 

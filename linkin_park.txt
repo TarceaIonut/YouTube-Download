@@ -1,0 +1,8 @@
+dl simple "Linkin Park" "Hybrid Theory - 2000" "https://www.youtube.com/watch?v=84J_XmGkX48&list=PLsT9douBcx9_t-YTx6iOiBakgME_Bt7GT"
+dl simple "Linkin Park" "Meteora - 2003" "https://www.youtube.com/watch?v=Ccvqxa8vMGQ&list=PLsT9douBcx99tKDxt-l5X-uFlqR4UaMug"
+dl simple "Linkin Park" "Minutes to Midnight - 2007" "https://www.youtube.com/watch?v=Gd8D42EsxNY&list=PLsT9douBcx98aRxSokwHvdmBP0fsfwZmK"
+dl simple "Linkin Park" "A Thousand Suns - 20010" "https://www.youtube.com/watch?v=YwPunX_3s6M&list=PLrnz4iRZQNlc3GxHpq3Re2Fdb7s4wGD1f"
+dl simple "Linkin Park" "Living Things - 2012" "https://www.youtube.com/watch?v=runQJVBO1GE&list=PLsT9douBcx99A8UkDU1m7GM_flcSiDnTP"
+dl simple "Linkin Park" "The Hunting Party - 2014" "https://www.youtube.com/watch?v=f5gStEj_CYA&list=PLsT9douBcx9_Lsa3npy9EpopideJ_J6Y7"
+dl simple "Linkin Park" "One More Light - 2017" "https://www.youtube.com/watch?v=Dpe4FgGDmcA&list=PLsT9douBcx9_bc5EP8LcaQZQLI2Na5zOH"
+dl simple "Linkin Park" "From Zero - 2024" "https://www.youtube.com/watch?v=y26UaUlvBws&list=PLsT9douBcx9_7VFQUUUSrlMPT8_fZBtb8"
